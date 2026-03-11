@@ -177,7 +177,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
       <div class="kpi" style="--kc:#7ed321">
         <div class="kpi-icon">📊</div>
         <div class="kpi-val" id="kPct">–</div>
-        <div class="kpi-lbl">% Inicios Tarde</div>
+        <div class="kpi-lbl">% Cumplimiento</div>
       </div>
     </div>
 
@@ -185,12 +185,12 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
       <div class="chart-hdr">
         <div>
           <div class="chart-title" id="chartTitle">Inicios Tarde por Día</div>
-          <div class="chart-sub">Verde = total viajes (arriba) · Gris = inicios tarde (abajo) · Línea = % tarde</div>
+          <div class="chart-sub">Verde = viajes a tiempo · Gris = inicios tarde · Línea = % cumplimiento (eje derecho)</div>
         </div>
         <div class="chart-legend">
           <div class="leg"><div class="leg-sq" style="background:#7ed321"></div>Total viajes</div>
           <div class="leg"><div class="leg-sq" style="background:#b0bac9"></div>Inicios tarde</div>
-          <div class="leg"><div class="leg-line" style="background:#d97706"></div>% Tarde</div>
+          <div class="leg"><div class="leg-line" style="background:#5cb800"></div>% Cumplimiento</div>
         </div>
       </div>
       <div class="chart-wrap"><canvas id="chart"></canvas></div>
@@ -324,7 +324,7 @@ function draw() {
   const dates=Object.keys(by).sort();
   const tots =dates.map(d=>by[d].t);
   const lates=dates.map(d=>by[d].l);
-  const pcts =dates.map(d=>by[d].t>0?+(by[d].l/by[d].t*100).toFixed(1):0);
+  const pcts =dates.map(d=>by[d].t>0?+((by[d].t-by[d].l)/by[d].t*100).toFixed(1):0);
 
   const totT=rows.reduce((s,r)=>s+(parseInt(r[C.viajes])||1),0);
   const totL=rows.reduce((s,r)=>s+(parseInt(r[C.retardo])||0),0);
@@ -332,7 +332,7 @@ function draw() {
 
   document.getElementById('kTotal').textContent=N(totT);
   document.getElementById('kTarde').textContent=N(totL);
-  document.getElementById('kPct').textContent=totT>0?(totL/totT*100).toFixed(1)+'%':'–';
+  document.getElementById('kPct').textContent=totT>0?((totT-totL)/totT*100).toFixed(1)+'%':'–';
 
   const labels=dates.map(d=>{
     const dt=new Date(d+'T12:00:00');
@@ -363,11 +363,11 @@ function draw() {
         barPercentage:.6,
       },
       {
-        label:'% Tarde',
+        label:'% Cumplimiento',
         data:pcts, type:'line', yAxisID:'yP', order:1,
-        borderColor:'#d97706', backgroundColor:'rgba(217,119,6,.07)',
+        borderColor:'#5cb800', backgroundColor:'rgba(92,184,0,.07)',
         borderWidth:2.5,
-        pointBackgroundColor:'#d97706', pointBorderColor:'#fff',
+        pointBackgroundColor:'#5cb800', pointBorderColor:'#fff',
         pointBorderWidth:2, pointRadius:5, pointHoverRadius:7,
         tension:.3, fill:true,
       },
@@ -381,8 +381,8 @@ function draw() {
           backgroundColor:'#1a2236', borderColor:'#7ed321', borderWidth:1,
           titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)', padding:12,
           callbacks:{label(c){
-            return c.dataset.label==='% Tarde'
-              ? '  % Tarde: '+c.raw+'%'
+            return c.dataset.label==='% Cumplimiento'
+              ? '  % Cumpl.: '+c.raw+'%'
               : '  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX');
           }}
         }
@@ -390,7 +390,7 @@ function draw() {
       scales:{
         x:{stacked:true, ticks:{color:'#6b7a99',font:{size:10,family:'Inter'}}, grid:{color:'rgba(0,0,0,.05)'}},
         y:{stacked:true, ticks:{color:'#6b7a99',font:{size:10}}, grid:{color:'rgba(0,0,0,.05)'}},
-        yP:{position:'right', ticks:{color:'#d97706',font:{size:10},callback:v=>v+'%'}, grid:{display:false}},
+        yP:{position:'right', ticks:{color:'#5cb800',font:{size:10},callback:v=>v+'%'}, grid:{display:false}},
       }
     },
     plugins:[{
@@ -398,11 +398,11 @@ function draw() {
       afterDatasetsDraw(chart){
         const ctx=chart.ctx;
         // % sobre la línea
-        const li=chart.data.datasets.findIndex(d=>d.label==='% Tarde');
+        const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
         chart.getDatasetMeta(li).data.forEach((pt,i)=>{
           const v=chart.data.datasets[li].data[i];
           if(v==null) return;
-          ctx.save();ctx.fillStyle='#b45309';ctx.font='bold 10px Inter';
+          ctx.save();ctx.fillStyle='#5a7a00';ctx.font='bold 10px Inter';
           ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-10);ctx.restore();
         });
         // número dentro barra gris (inicios tarde)
