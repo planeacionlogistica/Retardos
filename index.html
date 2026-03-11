@@ -8,223 +8,90 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --trx-red:#C8102E;
-  --trx-red-dark:#a00d24;
-  --trx-red-light:#f5e6e9;
-  --trx-navy:#1A2340;
-  --trx-navy-mid:#2c3a5a;
-  --trx-gray:#f7f8fa;
-  --trx-gray2:#eef0f4;
-  --trx-gray3:#d4d8e2;
-  --trx-text:#1A2340;
-  --trx-muted:#7a84a0;
-  --trx-border:#dde1ec;
-  --trx-white:#ffffff;
-  --amber:#e68a00;
-  --blue:#2563eb;
-  --green:#16a34a;
+  --red:#C8102E;--red-l:#f5e6e9;--navy:#1A2340;--gray:#f7f8fa;
+  --border:#dde1ec;--white:#ffffff;--muted:#7a84a0;--text:#1A2340;
+  --amber:#e68a00;--blue:#2563eb;--green:#16a34a;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--trx-gray);color:var(--trx-text);font-family:'Barlow',sans-serif;min-height:100vh}
-
-/* ── TOPBAR ── */
-.topbar{
-  background:var(--trx-white);
-  border-bottom:3px solid var(--trx-red);
-  padding:0 1.75rem;
-  display:flex;align-items:center;justify-content:space-between;
-  height:58px;position:sticky;top:0;z-index:50;
-  box-shadow:0 2px 12px rgba(26,35,64,.08);
-}
+body{background:var(--gray);color:var(--text);font-family:"Barlow",sans-serif;min-height:100vh}
+.topbar{background:var(--white);border-bottom:3px solid var(--red);padding:0 1.75rem;display:flex;align-items:center;justify-content:space-between;height:58px;position:sticky;top:0;z-index:50;box-shadow:0 2px 12px rgba(26,35,64,.08)}
 .brand{display:flex;align-items:center;gap:1rem}
-.brand-logo{
-  display:flex;align-items:center;gap:.5rem;
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:1.55rem;font-weight:800;letter-spacing:.04em;
-  color:var(--trx-red);text-transform:uppercase;
-}
-.brand-logo span{color:var(--trx-navy)}
-.brand-divider{width:1px;height:28px;background:var(--trx-border)}
-.brand-sub{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.95rem;font-weight:600;letter-spacing:.06em;
-  color:var(--trx-navy);text-transform:uppercase;opacity:.7;
-}
-.topbar-r{display:flex;align-items:center;gap:.75rem}
-.pill{
-  display:flex;align-items:center;gap:.45rem;
-  background:var(--trx-gray);border:1px solid var(--trx-border);
-  border-radius:20px;padding:.3rem .85rem;
-  font-size:.72rem;font-weight:500;color:var(--trx-muted);
-}
-.pill-dot{width:7px;height:7px;border-radius:50%;background:#16a34a;animation:pulse 2s infinite;flex-shrink:0}
+.logo{font-family:"Barlow Condensed",sans-serif;font-size:1.55rem;font-weight:800;letter-spacing:.04em;color:var(--red);text-transform:uppercase}
+.logo span{color:var(--navy)}
+.divider{width:1px;height:28px;background:var(--border)}
+.brand-sub{font-family:"Barlow Condensed",sans-serif;font-size:.95rem;font-weight:600;letter-spacing:.06em;color:var(--navy);text-transform:uppercase;opacity:.7}
+.pill{display:flex;align-items:center;gap:.45rem;background:var(--gray);border:1px solid var(--border);border-radius:20px;padding:.3rem .85rem;font-size:.72rem;font-weight:500;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:#16a34a;animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-
-/* ── LAYOUT ── */
 .layout{display:flex;height:calc(100vh - 58px)}
-
-/* ── SIDEBAR ── */
-.sidebar{
-  width:230px;flex-shrink:0;
-  background:var(--trx-white);
-  border-right:1px solid var(--trx-border);
-  padding:1.1rem .95rem;overflow-y:auto;
-  display:flex;flex-direction:column;gap:1.15rem;
-}
-.sb-sec{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:.72rem;font-weight:700;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--trx-red);
-  padding-bottom:.4rem;border-bottom:2px solid var(--trx-red-light);
-}
+.sidebar{width:230px;flex-shrink:0;background:var(--white);border-right:1px solid var(--border);padding:1.1rem .95rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.15rem}
+.sb-sec{font-family:"Barlow Condensed",sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--red);padding-bottom:.4rem;border-bottom:2px solid var(--red-l)}
 .fg{display:flex;flex-direction:column;gap:.3rem}
-.fg label{font-size:.7rem;font-weight:600;color:var(--trx-muted);letter-spacing:.04em;text-transform:uppercase}
-.fg select,.fg input[type=date]{
-  width:100%;background:var(--trx-gray);
-  border:1px solid var(--trx-border);border-radius:6px;
-  color:var(--trx-text);padding:.4rem .55rem;
-  font-size:.8rem;font-family:'Barlow',sans-serif;
-  appearance:none;cursor:pointer;outline:none;
-  transition:border-color .15s,box-shadow .15s;
-}
-.fg select:focus,.fg input:focus{
-  border-color:var(--trx-red);
-  box-shadow:0 0 0 3px rgba(200,16,46,.1);
-}
+.fg label{font-size:.7rem;font-weight:600;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.fg select,.fg input[type=date]{width:100%;background:var(--gray);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:.4rem .55rem;font-size:.8rem;font-family:"Barlow",sans-serif;appearance:none;cursor:pointer;outline:none;transition:border-color .15s}
+.fg select:focus,.fg input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,16,46,.1)}
 .date-row{display:grid;grid-template-columns:1fr 1fr;gap:.35rem}
-.btn-reset{
-  width:100%;background:transparent;
-  border:1px solid var(--trx-border);border-radius:6px;
-  color:var(--trx-muted);padding:.42rem;
-  font-size:.75rem;font-family:'Barlow',sans-serif;
-  font-weight:500;cursor:pointer;transition:all .15s;
-}
-.btn-reset:hover{border-color:var(--trx-red);color:var(--trx-red);background:var(--trx-red-light)}
-
-/* ── MAIN ── */
+.btn-reset{width:100%;background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--muted);padding:.42rem;font-size:.75rem;font-family:"Barlow",sans-serif;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-reset:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
 .main{flex:1;overflow-y:auto;padding:1.35rem 1.5rem;display:flex;flex-direction:column;gap:1.1rem}
-
-/* ── KPI GRID ── */
 .kpi-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.85rem}
-.kpi{
-  background:var(--trx-white);
-  border:1px solid var(--trx-border);border-radius:10px;
-  padding:.95rem 1.1rem;position:relative;overflow:hidden;
-  transition:transform .15s,box-shadow .15s;
-}
+.kpi{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:.95rem 1.1rem;position:relative;overflow:hidden;transition:transform .15s,box-shadow .15s}
 .kpi:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,35,64,.1)}
-.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:var(--kc,var(--trx-red))}
-.kpi::after{
-  content:'';position:absolute;bottom:0;right:0;
-  width:60px;height:60px;border-radius:50%;
-  background:var(--kc,var(--trx-red));opacity:.05;
-  transform:translate(20px,20px);
-}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--kc,var(--red))}
 .kpi-icon{font-size:1.1rem;margin-bottom:.2rem;opacity:.6}
-.kpi-val{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:1.85rem;font-weight:800;
-  color:var(--kc,var(--trx-red));line-height:1;
-}
-.kpi-lbl{font-size:.68rem;font-weight:600;color:var(--trx-muted);margin-top:.28rem;line-height:1.4;text-transform:uppercase;letter-spacing:.04em}
-
-/* ── CHART CARD ── */
-.chart-card{
-  background:var(--trx-white);
-  border:1px solid var(--trx-border);border-radius:12px;
-  padding:1.25rem 1.5rem;flex:1;min-height:340px;
-  display:flex;flex-direction:column;gap:.9rem;
-  box-shadow:0 2px 12px rgba(26,35,64,.05);
-}
+.kpi-val{font-family:"Barlow Condensed",sans-serif;font-size:1.85rem;font-weight:800;color:var(--kc,var(--red));line-height:1}
+.kpi-lbl{font-size:.68rem;font-weight:600;color:var(--muted);margin-top:.28rem;line-height:1.4;text-transform:uppercase;letter-spacing:.04em}
+.chart-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.25rem 1.5rem;flex:1;min-height:340px;display:flex;flex-direction:column;gap:.9rem;box-shadow:0 2px 12px rgba(26,35,64,.05)}
 .chart-hdr{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
-.chart-title{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:1.15rem;font-weight:700;color:var(--trx-navy);
-  letter-spacing:.02em;text-transform:uppercase;
-}
-.chart-sub{font-size:.7rem;color:var(--trx-muted);margin-top:.12rem;font-weight:400}
+.chart-title{font-family:"Barlow Condensed",sans-serif;font-size:1.15rem;font-weight:700;color:var(--navy);letter-spacing:.02em;text-transform:uppercase}
+.chart-sub{font-size:.7rem;color:var(--muted);margin-top:.12rem}
 .chart-legend{display:flex;gap:1.1rem;align-items:center;flex-shrink:0}
-.leg{display:flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:500;color:var(--trx-muted)}
+.leg{display:flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:500;color:var(--muted)}
 .leg-sq{width:10px;height:10px;border-radius:2px}
 .leg-line{width:18px;height:2px;border-radius:1px}
 .chart-wrap{flex:1;position:relative;min-height:270px}
-
-/* ── LOADING ── */
-.loading{
-  position:fixed;inset:0;
-  background:rgba(247,248,250,.92);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  z-index:300;gap:1.1rem;backdrop-filter:blur(4px);
-}
+.loading{position:fixed;inset:0;background:rgba(247,248,250,.93);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:300;gap:1.1rem;backdrop-filter:blur(4px)}
 .loading.hidden{display:none}
-.spin-wrap{position:relative;width:48px;height:48px}
-.spin{
-  width:48px;height:48px;
-  border:3px solid var(--trx-gray3);
-  border-top-color:var(--trx-red);
-  border-radius:50%;animation:spin .7s linear infinite;
-}
+.spin{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--red);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.load-brand{
-  font-family:'Barlow Condensed',sans-serif;
-  font-size:1.1rem;font-weight:700;color:var(--trx-red);
-  letter-spacing:.08em;text-transform:uppercase;
-}
-.load-txt{font-size:.8rem;color:var(--trx-muted);font-weight:400}
-
-/* ── ERROR BANNER ── */
-.error-banner{
-  background:#fff5f6;border:1px solid #f5c0c8;
-  border-radius:8px;padding:.75rem 1rem;
-  font-size:.8rem;color:var(--trx-red);
-  display:flex;align-items:center;gap:.6rem;
-}
-.error-banner.hidden{display:none}
+.load-brand{font-family:"Barlow Condensed",sans-serif;font-size:1.1rem;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase}
+.load-txt{font-size:.8rem;color:var(--muted)}
+.err{background:#fff5f6;border:1px solid #f5c0c8;border-radius:8px;padding:.75rem 1rem;font-size:.8rem;color:var(--red);display:flex;align-items:flex-start;gap:.6rem}
+.err.hidden{display:none}
 </style>
 </head>
 <body>
 
 <div class="loading" id="loading">
-  <div class="spin-wrap"><div class="spin"></div></div>
+  <div class="spin"></div>
   <div class="load-brand">Traxión</div>
   <p class="load-txt" id="loadTxt">Conectando con Google Sheets…</p>
 </div>
 
 <div class="topbar">
   <div class="brand">
-    <div class="brand-logo">Trax<span>ión</span></div>
-    <div class="brand-divider"></div>
+    <div class="logo">Trax<span>ión</span></div>
+    <div class="divider"></div>
     <div class="brand-sub">Dashboard Operativo · Inicios Tarde</div>
   </div>
-  <div class="topbar-r">
-    <div class="pill">
-      <div class="pill-dot" id="statusDot"></div>
-      <span id="statusTxt">Cargando…</span>
-    </div>
+  <div class="pill">
+    <div class="dot" id="statusDot" style="background:#aaa"></div>
+    <span id="statusTxt">Cargando…</span>
   </div>
 </div>
 
 <div class="layout">
   <aside class="sidebar">
     <div class="sb-sec">Filtros</div>
-    <div class="fg">
-      <label>Semana</label>
-      <select id="fSem" onchange="draw()"><option value="">Todas</option></select>
-    </div>
-    <div class="fg">
-      <label>Cliente / Grupo</label>
-      <select id="fCli" onchange="draw()"><option value="">Todos</option></select>
-    </div>
-    <div class="fg">
-      <label>Gerente</label>
-      <select id="fGer" onchange="draw()"><option value="">Todos</option></select>
-    </div>
-    <div class="fg">
-      <label>Jefe</label>
-      <select id="fJef" onchange="draw()"><option value="">Todos</option></select>
-    </div>
-    <div class="fg">
-      <label>Rango de fechas</label>
+    <div class="fg"><label>Semana</label>
+      <select id="fSem" onchange="draw()"><option value="">Todas</option></select></div>
+    <div class="fg"><label>Cliente / Grupo</label>
+      <select id="fCli" onchange="draw()"><option value="">Todos</option></select></div>
+    <div class="fg"><label>Gerente</label>
+      <select id="fGer" onchange="draw()"><option value="">Todos</option></select></div>
+    <div class="fg"><label>Jefe</label>
+      <select id="fJef" onchange="draw()"><option value="">Todos</option></select></div>
+    <div class="fg"><label>Rango de fechas</label>
       <div class="date-row">
         <input type="date" id="fFi" onchange="draw()" title="Desde">
         <input type="date" id="fFf" onchange="draw()" title="Hasta">
@@ -234,38 +101,14 @@ body{background:var(--trx-gray);color:var(--trx-text);font-family:'Barlow',sans-
   </aside>
 
   <main class="main">
-    <div class="error-banner hidden" id="errBanner">
-      ⚠️ <span id="errMsg"></span>
-    </div>
-
+    <div class="err hidden" id="errBanner">⚠️ <span id="errMsg"></span></div>
     <div class="kpi-grid">
-      <div class="kpi" style="--kc:var(--trx-navy)">
-        <div class="kpi-icon">🚛</div>
-        <div class="kpi-val" id="kTotal">–</div>
-        <div class="kpi-lbl">Total Viajes</div>
-      </div>
-      <div class="kpi" style="--kc:var(--trx-red)">
-        <div class="kpi-icon">⏰</div>
-        <div class="kpi-val" id="kTarde">–</div>
-        <div class="kpi-lbl">Inicios Tarde</div>
-      </div>
-      <div class="kpi" style="--kc:var(--amber)">
-        <div class="kpi-icon">📊</div>
-        <div class="kpi-val" id="kPct">–</div>
-        <div class="kpi-lbl">% Promedio Tard.</div>
-      </div>
-      <div class="kpi" style="--kc:var(--green)">
-        <div class="kpi-icon">📅</div>
-        <div class="kpi-val" id="kDias">–</div>
-        <div class="kpi-lbl">Días Analizados</div>
-      </div>
-      <div class="kpi" style="--kc:var(--blue)">
-        <div class="kpi-icon">📈</div>
-        <div class="kpi-val" id="kPeor">–</div>
-        <div class="kpi-lbl">% Más Alto</div>
-      </div>
+      <div class="kpi" style="--kc:var(--navy)"><div class="kpi-icon">🚛</div><div class="kpi-val" id="kTotal">–</div><div class="kpi-lbl">Total Viajes</div></div>
+      <div class="kpi" style="--kc:var(--red)"><div class="kpi-icon">⏰</div><div class="kpi-val" id="kTarde">–</div><div class="kpi-lbl">Inicios Tarde</div></div>
+      <div class="kpi" style="--kc:var(--amber)"><div class="kpi-icon">📊</div><div class="kpi-val" id="kPct">–</div><div class="kpi-lbl">% Promedio Tard.</div></div>
+      <div class="kpi" style="--kc:var(--green)"><div class="kpi-icon">📅</div><div class="kpi-val" id="kDias">–</div><div class="kpi-lbl">Días Analizados</div></div>
+      <div class="kpi" style="--kc:var(--blue)"><div class="kpi-icon">📈</div><div class="kpi-val" id="kPeor">–</div><div class="kpi-lbl">% Más Alto</div></div>
     </div>
-
     <div class="chart-card">
       <div class="chart-hdr">
         <div>
@@ -284,120 +127,96 @@ body{background:var(--trx-gray);color:var(--trx-text);font-family:'Barlow',sans-
 </div>
 
 <script>
-// ── Sheet ID fijo ──
 const SHEET_ID = '1UrOcFLeHEUQR84302e86c08Ny3fWclUA7JGAYtEkuyQ';
-// Intentar pestaña "Retardos" (gid puede variar); probamos gid=0 y gid=1 como fallback
-const GID_CANDIDATES = ['0','1','2','3','4','5','6','7','8','9','10','1084525723','773208046','2044662273','1773208046'];
+const CSV_URL  = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=0';
 
-// ── Columnas (nombres reales del sheet) ──
-// Mapeo flexible: buscamos variantes posibles de cada campo
-const COL_MAP = {
-  fecha:   ['start_date','fecha','date','Start Date','Fecha'],
-  semana:  ['Semana','semana','week','Week'],
-  cliente: ['group','Group','cliente','Cliente','business_unit'],
-  gerente: ['Gerente','gerente','manager','Manager'],
-  jefe:    ['Jefe','jefe','supervisor','Supervisor','jefe_operaciones'],
-  retardo: ['Retardos','retardo','Retardo','late','Late','status_tarde','Minutos de Retraso'],
-  viajes:  ['Cantidad de viajes','viajes','Viajes','trips','Trips','cantidad_viajes'],
+// Nombres exactos de columnas confirmados
+const C = {
+  fecha:   'start_date',
+  semana:  'Semana',
+  cliente: 'group',
+  gerente: 'Gerente',
+  jefe:    'Jefe',
+  retardo: 'Retardos',
+  viajes:  'Cantidad de viajes',
 };
 
-// Columna activa (se detecta automáticamente)
-let C = { fecha:'start_date', semana:'Semana', cliente:'group', gerente:'Gerente', jefe:'Jefe', retardo:'Retardos', viajes:'Cantidad de viajes' };
-
 let DATA = [], myChart = null;
-
-// ── Auto-load on start ──
 window.addEventListener('DOMContentLoaded', loadSheet);
+
+// ── CSV parser robusto (maneja comillas, 52+ columnas) ──
+function parseCSVLine(line) {
+  const cols = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else { inQ = !inQ; }
+    } else if (ch === ',' && !inQ) {
+      cols.push(cur.trim());
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  cols.push(cur.trim());
+  return cols;
+}
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  if (lines.length < 2) return [];
+  const hdrs = parseCSVLine(lines[0]);
+  console.log('Total columnas:', hdrs.length);
+  console.log('Headers:', hdrs.join(' | '));
+  
+  // Verificar que existan las columnas necesarias
+  const missing = Object.entries(C).filter(([k,v]) => !hdrs.includes(v)).map(([k,v]) => v);
+  if (missing.length) console.warn('Columnas no encontradas:', missing);
+
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const cols = parseCSVLine(lines[i]);
+    const obj = {};
+    hdrs.forEach((h, idx) => { obj[h] = cols[idx] !== undefined ? cols[idx] : ''; });
+    if (obj[C.fecha] && obj[C.fecha].trim() !== '') rows.push(obj);
+  }
+  console.log('Filas válidas (con fecha):', rows.length);
+  if (rows.length > 0) console.log('Fila ejemplo:', rows[0]);
+  return rows;
+}
 
 async function loadSheet() {
   showLoad('Conectando con Google Sheets…');
   hideErr();
-  let lastErr = '';
-
-  for (const gid of GID_CANDIDATES) {
-    try {
-      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
-      showLoad(`Buscando datos (gid=${gid})…`);
-      const res = await fetch(url);
-      if (!res.ok) { lastErr = `HTTP ${res.status} en gid=${gid}`; continue; }
-      const text = await res.text();
-      // Detectar columnas reales
-      const firstLine = text.split('\n')[0];
-      const headers = firstLine.split(',').map(h => h.trim().replace(/^"|"$/g,''));
-      console.log('Headers encontrados (gid='+gid+'):', headers);
-      
-      // Auto-detectar columnas
-      const detected = {};
-      for (const [key, candidates] of Object.entries(COL_MAP)) {
-        const found = candidates.find(c => headers.includes(c));
-        if (found) detected[key] = found;
-      }
-      
-      // Necesitamos al menos fecha para continuar
-      if (!detected.fecha) {
-        lastErr = `gid=${gid}: sin 'start_date'. Columnas encontradas: ${headers.join(', ')}`;
-        continue;
-      }
-      
-      // Usar columnas detectadas, mantener defaults para las no encontradas
-      C = { ...C, ...detected };
-      console.log('Columnas mapeadas:', C);
-
-      showLoad('Procesando datos…');
-      DATA = parseCSV(text);
-      if (!DATA.length) { lastErr = `gid=${gid}: sin filas válidas`; continue; }
-      
-      setStatus(`Conectado · ${DATA.length.toLocaleString('es-MX')} registros`, true);
-      hideLoad();
-      fillSelects();
-      draw();
-      return; // éxito, salir
-    } catch(e) {
-      lastErr = e.message;
-    }
+  try {
+    const res = await fetch(CSV_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status + ' – verifica que el sheet sea público');
+    showLoad('Procesando datos…');
+    const text = await res.text();
+    DATA = parseCSV(text);
+    if (!DATA.length) throw new Error('No se encontraron filas con fecha en la columna "start_date"');
+    setStatus('Conectado · ' + DATA.length.toLocaleString('es-MX') + ' registros', true);
+    hideLoad();
+    fillSelects();
+    draw();
+  } catch(e) {
+    hideLoad();
+    setStatus('Error al cargar', false);
+    showErr(e.message + ' — Abre la consola del navegador (F12) para ver más detalles.');
   }
-
-  // Si llegamos aquí, ningún gid funcionó
-  hideLoad();
-  setStatus('Error al cargar', false);
-  showErr(`No se encontraron datos. Último error: ${lastErr}. Asegúrate de que el Sheet esté compartido públicamente.`);
 }
 
-// ── CSV parser (robusto para sheets grandes) ──
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  if (lines.length < 2) return [];
-  const hdrs = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-  const rows = [];
-  for (let i = 1; i < lines.length; i++) {
-    const line = lines[i];
-    if (!line.trim()) continue;
-    // Parser robusto que maneja comas dentro de comillas
-    const cols = [];
-    let cur = '', inQ = false;
-    for (let j = 0; j < line.length; j++) {
-      const ch = line[j];
-      if (ch === '"') { inQ = !inQ; }
-      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-      else { cur += ch; }
-    }
-    cols.push(cur.trim());
-    const obj = {};
-    hdrs.forEach((h, idx) => obj[h] = (cols[idx] || '').replace(/^"|"$/g, '').trim());
-    // Solo incluir filas que tengan fecha
-    if (obj[C.fecha] && obj[C.fecha] !== '') rows.push(obj);
-  }
-  return rows;
-}
-
-// ── Normalize date to YYYY-MM-DD ──
+// ── Normalizar fecha a YYYY-MM-DD ──
 function norm(s) {
   if (!s) return '';
   s = s.trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
   const p = s.split('/');
-  if (p.length === 3 && p[2].length === 4) return `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}`;
-  if (p.length === 3 && p[0].length === 4) return `${p[0]}-${p[1].padStart(2,'0')}-${p[2].padStart(2,'0')}`;
+  if (p.length === 3 && p[2].length === 4) return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+  if (p.length === 3 && p[0].length === 4) return p[0]+'-'+p[1].padStart(2,'0')+'-'+p[2].padStart(2,'0');
   return s;
 }
 
@@ -413,7 +232,7 @@ function fill(id, vals) {
   const sel = document.getElementById(id);
   const cur = sel.value;
   sel.innerHTML = '<option value="">Todos</option>';
-  vals.forEach(v => sel.innerHTML += `<option value="${v}">${v}</option>`);
+  vals.forEach(v => { sel.innerHTML += '<option value="' + v + '">' + v + '</option>'; });
   if (vals.includes(cur)) sel.value = cur;
 }
 function getF() {
@@ -451,7 +270,8 @@ function draw() {
   const by = {};
   rows.forEach(r => {
     const d = norm(r[C.fecha]);
-    if (!by[d]) by[d] = { t: 0, l: 0 };
+    if (!d) return;
+    if (!by[d]) by[d] = { t:0, l:0 };
     by[d].t += parseInt(r[C.viajes]) || 1;
     by[d].l += parseInt(r[C.retardo]) || 0;
   });
@@ -459,158 +279,89 @@ function draw() {
   const dates = Object.keys(by).sort();
   const tots  = dates.map(d => by[d].t);
   const lates = dates.map(d => by[d].l);
-  const pcts  = dates.map(d => +(by[d].l / by[d].t * 100).toFixed(1));
+  const pcts  = dates.map(d => by[d].t > 0 ? +(by[d].l/by[d].t*100).toFixed(1) : 0);
 
-  const totT = rows.reduce((s, r) => s + tripCount(r), 0);
-  const totL = rows.reduce((s, r) => s + isLate(r), 0);
+  const totT = rows.reduce((s,r) => s+(parseInt(r[C.viajes])||1), 0);
+  const totL = rows.reduce((s,r) => s+(parseInt(r[C.retardo])||0), 0);
   const N = n => n.toLocaleString('es-MX');
   document.getElementById('kTotal').textContent = N(totT);
   document.getElementById('kTarde').textContent = N(totL);
-  document.getElementById('kPct').textContent   = totT > 0 ? (totL / totT * 100).toFixed(1) + '%' : '–';
+  document.getElementById('kPct').textContent   = totT > 0 ? (totL/totT*100).toFixed(1)+'%' : '–';
   document.getElementById('kDias').textContent  = dates.length;
-  document.getElementById('kPeor').textContent  = pcts.length ? Math.max(...pcts) + '%' : '–';
+  document.getElementById('kPeor').textContent  = pcts.length ? Math.max(...pcts)+'%' : '–';
 
   const labels = dates.map(d => {
-    const dt = new Date(d + 'T12:00:00');
-    return dt.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
+    const dt = new Date(d+'T12:00:00');
+    return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
   });
 
   if (myChart) myChart.destroy();
   const ctx = document.getElementById('chart').getContext('2d');
   myChart = new Chart(ctx, {
     type: 'bar',
-    data: {
-      labels,
-      datasets: [
-        {
-          label: 'En tiempo',
-          data: tots.map((t, i) => t - lates[i]),
-          backgroundColor: '#1A2340',
-          stack: 's', order: 2,
-          borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 },
-          barPercentage: .65,
-        },
-        {
-          label: 'Tarde',
-          data: lates,
-          backgroundColor: '#C8102E',
-          stack: 's', order: 2,
-          borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
-          barPercentage: .65,
-        },
-        {
-          label: '% Tarde',
-          data: pcts,
-          type: 'line', yAxisID: 'yP', order: 1,
-          borderColor: '#e68a00',
-          backgroundColor: 'rgba(230,138,0,.07)',
-          borderWidth: 2.5,
-          pointBackgroundColor: '#e68a00',
-          pointBorderColor: '#fff',
-          pointBorderWidth: 2,
-          pointRadius: 5,
-          pointHoverRadius: 7,
-          tension: .3,
-          fill: true,
-        },
-      ]
-    },
+    data: { labels, datasets: [
+      { label:'En tiempo', data:tots.map((t,i)=>t-lates[i]), backgroundColor:'#1A2340', stack:'s', order:2,
+        borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4}, barPercentage:.65 },
+      { label:'Tarde', data:lates, backgroundColor:'#C8102E', stack:'s', order:2,
+        borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0}, barPercentage:.65 },
+      { label:'% Tarde', data:pcts, type:'line', yAxisID:'yP', order:1,
+        borderColor:'#e68a00', backgroundColor:'rgba(230,138,0,.07)', borderWidth:2.5,
+        pointBackgroundColor:'#e68a00', pointBorderColor:'#fff', pointBorderWidth:2,
+        pointRadius:5, pointHoverRadius:7, tension:.3, fill:true },
+    ]},
     options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1A2340',
-          borderColor: '#C8102E',
-          borderWidth: 1,
-          titleColor: '#fff',
-          bodyColor: '#a0a8c0',
-          padding: 12,
-          callbacks: {
-            label(c) {
-              return c.dataset.label === '% Tarde'
-                ? `  % Tarde: ${c.raw}%`
-                : `  ${c.dataset.label}: ${c.raw.toLocaleString('es-MX')}`;
-            }
-          }
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#1A2340', borderColor:'#C8102E', borderWidth:1,
+          titleColor:'#fff', bodyColor:'#a0a8c0', padding:12,
+          callbacks:{label(c){return c.dataset.label==='% Tarde'?'  % Tarde: '+c.raw+'%':'  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX');}}
         }
       },
-      scales: {
-        x: {
-          stacked: true,
-          ticks: { color: '#7a84a0', font: { size: 10, family: 'Barlow' } },
-          grid: { color: 'rgba(212,216,226,.5)' },
-        },
-        y: {
-          stacked: true,
-          ticks: { color: '#7a84a0', font: { size: 10, family: 'Barlow' } },
-          grid: { color: 'rgba(212,216,226,.5)' },
-        },
-        yP: {
-          position: 'right',
-          ticks: { color: '#e68a00', font: { size: 10, family: 'Barlow' }, callback: v => v + '%' },
-          grid: { display: false },
-        },
+      scales:{
+        x:{stacked:true,ticks:{color:'#7a84a0',font:{size:10,family:'Barlow'}},grid:{color:'rgba(212,216,226,.5)'}},
+        y:{stacked:true,ticks:{color:'#7a84a0',font:{size:10}},grid:{color:'rgba(212,216,226,.5)'}},
+        yP:{position:'right',ticks:{color:'#e68a00',font:{size:10},callback:v=>v+'%'},grid:{display:false}},
       }
     },
-    plugins: [{
-      id: 'lbl',
-      afterDatasetsDraw(chart) {
-        const ctx = chart.ctx;
-        // % above line points
-        const li = chart.data.datasets.findIndex(d => d.label === '% Tarde');
-        chart.getDatasetMeta(li).data.forEach((pt, i) => {
-          const v = chart.data.datasets[li].data[i];
-          if (v == null) return;
-          ctx.save();
-          ctx.fillStyle = '#b36a00';
-          ctx.font = 'bold 11px Barlow Condensed';
-          ctx.textAlign = 'center';
-          ctx.fillText(v + '%', pt.x, pt.y - 12);
-          ctx.restore();
+    plugins:[{
+      id:'lbl',
+      afterDatasetsDraw(chart){
+        const ctx=chart.ctx;
+        const li=chart.data.datasets.findIndex(d=>d.label==='% Tarde');
+        chart.getDatasetMeta(li).data.forEach((pt,i)=>{
+          const v=chart.data.datasets[li].data[i];
+          if(v==null)return;
+          ctx.save();ctx.fillStyle='#b36a00';ctx.font='bold 11px Barlow Condensed';
+          ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-12);ctx.restore();
         });
-        // count inside late bars
-        const bi = chart.data.datasets.findIndex(d => d.label === 'Tarde');
-        chart.getDatasetMeta(bi).data.forEach((bar, i) => {
-          const v = chart.data.datasets[bi].data[i];
-          if (!v || bar.height < 14) return;
-          ctx.save();
-          ctx.fillStyle = '#fff';
-          ctx.font = 'bold 11px Barlow Condensed';
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(v.toLocaleString('es-MX'), bar.x, bar.y + bar.height / 2);
-          ctx.restore();
+        const bi=chart.data.datasets.findIndex(d=>d.label==='Tarde');
+        chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
+          const v=chart.data.datasets[bi].data[i];
+          if(!v||bar.height<14)return;
+          ctx.save();ctx.fillStyle='#fff';ctx.font='bold 11px Barlow Condensed';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
         });
       }
     }]
   });
 
-  const parts = [];
-  if (f.sem) parts.push('Sem ' + f.sem);
-  if (f.cli) parts.push(f.cli);
-  if (f.ger) parts.push('Ger: ' + f.ger);
-  if (f.jef) parts.push('Jefe: ' + f.jef);
-  document.getElementById('chartTitle').textContent =
-    'Inicios Tarde por Día' + (parts.length ? ' – ' + parts.join(' · ') : '');
+  const parts=[];
+  if(f.sem)parts.push('Sem '+f.sem);
+  if(f.cli)parts.push(f.cli);
+  if(f.ger)parts.push('Ger: '+f.ger);
+  if(f.jef)parts.push('Jefe: '+f.jef);
+  document.getElementById('chartTitle').textContent='Inicios Tarde por Día'+(parts.length?' – '+parts.join(' · '):'');
 }
 
-// ── Helpers ──
-function showLoad(t) {
-  document.getElementById('loadTxt').textContent = t;
-  document.getElementById('loading').classList.remove('hidden');
-}
-function hideLoad() { document.getElementById('loading').classList.add('hidden'); }
-function setStatus(t, ok) {
-  document.getElementById('statusTxt').textContent = t;
-  document.getElementById('statusDot').style.background = ok ? '#16a34a' : '#C8102E';
-}
-function showErr(msg) {
-  document.getElementById('errMsg').textContent = msg;
-  document.getElementById('errBanner').classList.remove('hidden');
-}
-function hideErr() { document.getElementById('errBanner').classList.add('hidden'); }
+function showLoad(t){document.getElementById('loadTxt').textContent=t;document.getElementById('loading').classList.remove('hidden')}
+function hideLoad(){document.getElementById('loading').classList.add('hidden')}
+function setStatus(t,ok){document.getElementById('statusTxt').textContent=t;document.getElementById('statusDot').style.background=ok?'#16a34a':'#C8102E'}
+function showErr(msg){document.getElementById('errMsg').textContent=msg;document.getElementById('errBanner').classList.remove('hidden')}
+function hideErr(){document.getElementById('errBanner').classList.add('hidden')}
 </script>
 </body>
 </html>
