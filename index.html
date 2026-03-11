@@ -286,18 +286,23 @@ body{background:var(--trx-gray);color:var(--trx-text);font-family:'Barlow',sans-
 <script>
 // ── Sheet ID fijo ──
 const SHEET_ID = '1UrOcFLeHEUQR84302e86c08Ny3fWclUA7JGAYtEkuyQ';
-const CSV_URL  = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
+// Intentar pestaña "Retardos" (gid puede variar); probamos gid=0 y gid=1 como fallback
+const GID_CANDIDATES = ['0','1','2','3','4','5','6','7','8','9','10','1084525723','773208046','2044662273','1773208046'];
 
-// ── Columnas ──
-const C = {
-  fecha:   'start_date',
-  semana:  'Semana',
-  cliente: 'group',
-  gerente: 'Gerente',
-  jefe:    'Jefe',
-  retardo: 'Retardos',
-  viajes:  'Cantidad de viajes',
+// ── Columnas (nombres reales del sheet) ──
+// Mapeo flexible: buscamos variantes posibles de cada campo
+const COL_MAP = {
+  fecha:   ['start_date','fecha','date','Start Date','Fecha'],
+  semana:  ['Semana','semana','week','Week'],
+  cliente: ['group','Group','cliente','Cliente','business_unit'],
+  gerente: ['Gerente','gerente','manager','Manager'],
+  jefe:    ['Jefe','jefe','supervisor','Supervisor','jefe_operaciones'],
+  retardo: ['Retardos','retardo','Retardo','late','Late','status_tarde','Minutos de Retraso'],
+  viajes:  ['Cantidad de viajes','viajes','Viajes','trips','Trips','cantidad_viajes'],
 };
+
+// Columna activa (se detecta automáticamente)
+let C = { fecha:'start_date', semana:'Semana', cliente:'group', gerente:'Gerente', jefe:'Jefe', retardo:'Retardos', viajes:'Cantidad de viajes' };
 
 let DATA = [], myChart = null;
 
@@ -307,36 +312,82 @@ window.addEventListener('DOMContentLoaded', loadSheet);
 async function loadSheet() {
   showLoad('Conectando con Google Sheets…');
   hideErr();
-  try {
-    const res = await fetch(CSV_URL);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    showLoad('Procesando datos…');
-    const text = await res.text();
-    DATA = parseCSV(text);
-    if (!DATA.length) throw new Error('El Sheet está vacío o no tiene datos válidos');
-    setStatus(`Conectado · ${DATA.length.toLocaleString('es-MX')} registros`, true);
-  } catch(e) {
-    hideLoad();
-    setStatus('Error al cargar', false);
-    showErr(`No se pudo cargar el Sheet: ${e.message}. Verifica que esté compartido públicamente.`);
-    return;
+  let lastErr = '';
+
+  for (const gid of GID_CANDIDATES) {
+    try {
+      const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=${gid}`;
+      showLoad(`Buscando datos (gid=${gid})…`);
+      const res = await fetch(url);
+      if (!res.ok) { lastErr = `HTTP ${res.status} en gid=${gid}`; continue; }
+      const text = await res.text();
+      // Detectar columnas reales
+      const firstLine = text.split('\n')[0];
+      const headers = firstLine.split(',').map(h => h.trim().replace(/^"|"$/g,''));
+      console.log('Headers encontrados (gid='+gid+'):', headers);
+      
+      // Auto-detectar columnas
+      const detected = {};
+      for (const [key, candidates] of Object.entries(COL_MAP)) {
+        const found = candidates.find(c => headers.includes(c));
+        if (found) detected[key] = found;
+      }
+      
+      // Necesitamos al menos fecha para continuar
+      if (!detected.fecha) {
+        lastErr = `gid=${gid}: sin 'start_date'. Columnas encontradas: ${headers.join(', ')}`;
+        continue;
+      }
+      
+      // Usar columnas detectadas, mantener defaults para las no encontradas
+      C = { ...C, ...detected };
+      console.log('Columnas mapeadas:', C);
+
+      showLoad('Procesando datos…');
+      DATA = parseCSV(text);
+      if (!DATA.length) { lastErr = `gid=${gid}: sin filas válidas`; continue; }
+      
+      setStatus(`Conectado · ${DATA.length.toLocaleString('es-MX')} registros`, true);
+      hideLoad();
+      fillSelects();
+      draw();
+      return; // éxito, salir
+    } catch(e) {
+      lastErr = e.message;
+    }
   }
+
+  // Si llegamos aquí, ningún gid funcionó
   hideLoad();
-  fillSelects();
-  draw();
+  setStatus('Error al cargar', false);
+  showErr(`No se encontraron datos. Último error: ${lastErr}. Asegúrate de que el Sheet esté compartido públicamente.`);
 }
 
-// ── CSV parser ──
+// ── CSV parser (robusto para sheets grandes) ──
 function parseCSV(text) {
   const lines = text.trim().split('\n');
   if (lines.length < 2) return [];
   const hdrs = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-  return lines.slice(1).map(line => {
-    const cols = line.match(/("(?:[^"]|"")*"|[^,]*)/g) || [];
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i];
+    if (!line.trim()) continue;
+    // Parser robusto que maneja comas dentro de comillas
+    const cols = [];
+    let cur = '', inQ = false;
+    for (let j = 0; j < line.length; j++) {
+      const ch = line[j];
+      if (ch === '"') { inQ = !inQ; }
+      else if (ch === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
+      else { cur += ch; }
+    }
+    cols.push(cur.trim());
     const obj = {};
-    hdrs.forEach((h, i) => obj[h] = (cols[i] || '').replace(/^"|"$/g, '').trim());
-    return obj;
-  }).filter(r => r[C.fecha]);
+    hdrs.forEach((h, idx) => obj[h] = (cols[idx] || '').replace(/^"|"$/g, '').trim());
+    // Solo incluir filas que tengan fecha
+    if (obj[C.fecha] && obj[C.fecha] !== '') rows.push(obj);
+  }
+  return rows;
 }
 
 // ── Normalize date to YYYY-MM-DD ──
@@ -410,8 +461,8 @@ function draw() {
   const lates = dates.map(d => by[d].l);
   const pcts  = dates.map(d => +(by[d].l / by[d].t * 100).toFixed(1));
 
-  const totT = rows.reduce((s, r) => s + (parseInt(r[C.viajes]) || 1), 0);
-  const totL = rows.reduce((s, r) => s + (parseInt(r[C.retardo]) || 0), 0);
+  const totT = rows.reduce((s, r) => s + tripCount(r), 0);
+  const totL = rows.reduce((s, r) => s + isLate(r), 0);
   const N = n => n.toLocaleString('es-MX');
   document.getElementById('kTotal').textContent = N(totT);
   document.getElementById('kTarde').textContent = N(totL);
