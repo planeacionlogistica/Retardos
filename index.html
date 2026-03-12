@@ -85,18 +85,19 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .kpi-lbl{font-size:.68rem;font-weight:600;color:var(--muted);margin-top:.3rem;text-transform:uppercase;letter-spacing:.05em;line-height:1.4}
 
 .chart-card{
-  background:var(--white);border-radius:12px;padding:1.35rem 1.5rem;
+  background:var(--white);border-radius:12px;padding:1.1rem 1.35rem;
   box-shadow:0 2px 10px rgba(26,34,54,.07);
-  display:flex;flex-direction:column;gap:.9rem;
+  display:flex;flex-direction:column;gap:.7rem;
 }
 .chart-hdr{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
-.chart-title{font-size:1rem;font-weight:700;color:var(--text)}
-.chart-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+.chart-title{font-size:.95rem;font-weight:700;color:var(--text)}
+.chart-sub{font-size:.7rem;color:var(--muted);margin-top:.1rem}
 .chart-legend{display:flex;gap:1rem;align-items:center;flex-shrink:0}
 .leg{display:flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:500;color:var(--muted)}
 .leg-sq{width:10px;height:10px;border-radius:2px}
 .leg-line{width:18px;height:2.5px;border-radius:1px}
-.chart-wrap{position:relative;height:280px}
+/* Gráfica 10% más chica */
+.chart-wrap{position:relative;height:252px}
 
 /* ── TABLA ── */
 .table-card{
@@ -106,35 +107,35 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 }
 .table-hdr{
   display:flex;align-items:center;justify-content:space-between;
-  padding:.9rem 1.25rem;border-bottom:1px solid var(--border);
+  padding:.85rem 1.25rem;border-bottom:1px solid var(--border);
 }
 .table-hdr-title{font-size:.9rem;font-weight:700;color:var(--text)}
-.table-hdr-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
-.table-count{font-size:.72rem;color:var(--muted);background:var(--bg);border-radius:20px;padding:.2rem .65rem}
+.table-hdr-sub{font-size:.7rem;color:var(--muted);margin-top:.1rem}
+.table-count{font-size:.72rem;color:var(--muted);background:var(--bg);border-radius:20px;padding:.2rem .65rem;white-space:nowrap}
 .data-table{width:100%;border-collapse:collapse}
 .data-table thead th{
   background:var(--navy2);color:rgba(255,255,255,.85);
   font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  padding:.65rem 1rem;text-align:left;white-space:nowrap;
+  padding:.6rem 1rem;text-align:left;white-space:nowrap;position:sticky;top:0;
 }
-.data-table thead th:not(:first-child){text-align:right}
+.data-table thead th:nth-child(n+3){text-align:right}
 .data-table tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
 .data-table tbody tr:last-child{border-bottom:none}
 .data-table tbody tr:hover{background:#f7f9ff}
-.data-table tbody td{padding:.6rem 1rem;font-size:.8rem;color:var(--text)}
-.data-table tbody td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
-.td-cli{font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.data-table tbody td{padding:.55rem 1rem;font-size:.8rem;color:var(--text)}
+.data-table tbody td:nth-child(n+3){text-align:right;font-variant-numeric:tabular-nums}
+.td-rank{width:36px;padding-right:.25rem}
+.td-cli{font-weight:600}
 .td-num{color:var(--navy)}
 .td-late{color:var(--red);font-weight:600}
 .pct-cell{display:flex;align-items:center;justify-content:flex-end;gap:.55rem}
-.pct-bar-wrap{width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
+.pct-bar-wrap{width:80px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
 .pct-bar{height:100%;border-radius:3px;transition:width .4s}
-.pct-val{font-weight:700;font-size:.78rem;min-width:38px;text-align:right}
+.pct-val{font-weight:700;font-size:.8rem;min-width:42px;text-align:right}
 .rank-badge{
   display:inline-flex;align-items:center;justify-content:center;
-  width:20px;height:20px;border-radius:50%;
+  width:22px;height:22px;border-radius:50%;
   font-size:.65rem;font-weight:700;flex-shrink:0;
-  margin-right:.4rem;
 }
 .table-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.82rem}
 
@@ -147,6 +148,14 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 
 .err{background:#fff5f5;border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:.75rem 1rem;font-size:.8rem;color:#c53030;display:flex;align-items:flex-start;gap:.5rem}
 .err.hidden{display:none}
+
+/* debug panel */
+.debug-pill{
+  position:fixed;bottom:1rem;right:1rem;z-index:200;
+  background:var(--navy2);color:rgba(255,255,255,.5);
+  font-size:.65rem;font-family:monospace;padding:.3rem .6rem;border-radius:6px;
+  max-width:340px;word-break:break-all;display:none;
+}
 </style>
 </head>
 <body>
@@ -233,7 +242,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
       <div class="table-hdr">
         <div>
           <div class="table-hdr-title" id="tableTitle">Resumen por Cliente</div>
-          <div class="chart-sub">Ordenado por % cumplimiento · respeta los filtros activos</div>
+          <div class="table-hdr-sub">Ordenado por % cumplimiento · respeta los filtros activos</div>
         </div>
         <span class="table-count" id="tableCount">0 clientes</span>
       </div>
@@ -241,7 +250,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
         <table class="data-table">
           <thead>
             <tr>
-              <th>#</th>
+              <th style="width:44px">#</th>
               <th>Cliente / Grupo</th>
               <th>Total Viajes</th>
               <th>Inicios Tarde</th>
@@ -255,6 +264,8 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 
   </main>
 </div>
+
+<div class="debug-pill" id="debugPill"></div>
 
 <script>
 const SHEET_ID = '1UrOcFLeHEUQR84302e86c08Ny3fWclUA7JGAYtEkuyQ';
@@ -288,6 +299,7 @@ function parseCSV(text) {
   const lines = text.trim().split('\n');
   if (lines.length < 2) return [];
   const hdrs = parseCSVLine(lines[0]);
+  console.log('Columnas ('+hdrs.length+'):', hdrs.join(' | '));
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
     if (!lines[i].trim()) continue;
@@ -296,6 +308,10 @@ function parseCSV(text) {
     hdrs.forEach((h,idx) => { obj[h] = cols[idx]!==undefined ? cols[idx] : ''; });
     if (obj[C.fecha] && obj[C.fecha].trim()!=='') rows.push(obj);
   }
+  console.log('Filas cargadas:', rows.length);
+  // Debug: mostrar valores únicos del campo cliente
+  const uniqs = [...new Set(rows.map(r=>r[C.cliente]).filter(Boolean))];
+  console.log('Clientes únicos ('+uniqs.length+'):', uniqs.slice(0,10));
   return rows;
 }
 
@@ -307,11 +323,18 @@ async function loadSheet() {
     showLoad('Procesando datos…');
     const text = await res.text();
     DATA = parseCSV(text);
-    if (!DATA.length) throw new Error('Sin filas con fecha "start_date". Abre F12 → Console.');
+    if (!DATA.length) throw new Error('Sin filas válidas. Verifica columna "start_date" en el sheet.');
+
+    // Detectar nombre real del campo cliente si difiere
+    const firstRow = DATA[0];
+    const keys = Object.keys(firstRow);
+    console.log('Todas las columnas:', keys);
+
     setStatus('Conectado · '+DATA.length.toLocaleString('es-MX')+' registros', true);
     hideLoad(); fillSelects(); draw();
   } catch(e) {
     hideLoad(); setStatus('Error al cargar', false); showErr(e.message);
+    console.error(e);
   }
 }
 
@@ -325,7 +348,7 @@ function norm(s) {
   return s;
 }
 
-const uniq = arr => [...new Set(arr.filter(Boolean))].sort();
+const uniq = arr => [...new Set(arr.filter(v => v && v.trim()))].sort();
 
 function fillSelects() {
   fill('fSem', uniq(DATA.map(r=>r[C.semana])));
@@ -333,39 +356,47 @@ function fillSelects() {
   fill('fGer', uniq(DATA.map(r=>r[C.gerente])));
   fill('fJef', uniq(DATA.map(r=>r[C.jefe])));
 }
-function fill(id,vals){
-  const sel=document.getElementById(id); const cur=sel.value;
-  sel.innerHTML='<option value="">Todos</option>';
-  vals.forEach(v=>{sel.innerHTML+='<option value="'+v+'">'+v+'</option>';});
-  if(vals.includes(cur)) sel.value=cur;
+
+function fill(id, vals) {
+  const sel = document.getElementById(id);
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Todos</option>';
+  vals.forEach(v => {
+    const opt = document.createElement('option');
+    opt.value = v; opt.textContent = v;
+    sel.appendChild(opt);
+  });
+  if (vals.includes(cur)) sel.value = cur;
 }
-function getF(){
-  return{
-    sem:document.getElementById('fSem').value,
-    cli:document.getElementById('fCli').value,
-    ger:document.getElementById('fGer').value,
-    jef:document.getElementById('fJef').value,
-    fi:document.getElementById('fFi').value,
-    ff:document.getElementById('fFf').value,
+
+function getF() {
+  return {
+    sem: document.getElementById('fSem').value,
+    cli: document.getElementById('fCli').value,
+    ger: document.getElementById('fGer').value,
+    jef: document.getElementById('fJef').value,
+    fi:  document.getElementById('fFi').value,
+    ff:  document.getElementById('fFf').value,
   };
 }
-function resetFilters(){
-  ['fSem','fCli','fGer','fJef'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('fFi').value='';
-  document.getElementById('fFf').value='';
+
+function resetFilters() {
+  ['fSem','fCli','fGer','fJef'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fFi').value = '';
+  document.getElementById('fFf').value = '';
   draw();
 }
 
 function filterRows() {
   const f = getF();
-  return DATA.filter(r=>{
-    if(f.sem && r[C.semana]!==f.sem) return false;
-    if(f.cli && r[C.cliente]!==f.cli) return false;
-    if(f.ger && r[C.gerente]!==f.ger) return false;
-    if(f.jef && r[C.jefe]!==f.jef) return false;
-    const d=norm(r[C.fecha]);
-    if(f.fi && d<f.fi) return false;
-    if(f.ff && d>f.ff) return false;
+  return DATA.filter(r => {
+    if (f.sem && r[C.semana] !== f.sem) return false;
+    if (f.cli && r[C.cliente] !== f.cli) return false;
+    if (f.ger && r[C.gerente] !== f.ger) return false;
+    if (f.jef && r[C.jefe]    !== f.jef) return false;
+    const d = norm(r[C.fecha]);
+    if (f.fi && d < f.fi) return false;
+    if (f.ff && d > f.ff) return false;
     return true;
   });
 }
@@ -379,147 +410,147 @@ function pctColor(p) {
 
 function draw() {
   if (!DATA.length) return;
-  const f = getF();
+  const f    = getF();
   const rows = filterRows();
 
-  // ── Gráfica por día ──
-  const by={};
-  rows.forEach(r=>{
-    const d=norm(r[C.fecha]); if(!d) return;
-    if(!by[d]) by[d]={t:0,l:0};
-    by[d].t += parseInt(r[C.viajes])||1;
-    by[d].l += parseInt(r[C.retardo])||0;
+  // ── KPIs y gráfica por día ──
+  const by = {};
+  rows.forEach(r => {
+    const d = norm(r[C.fecha]); if (!d) return;
+    if (!by[d]) by[d] = { t: 0, l: 0 };
+    by[d].t += parseInt(r[C.viajes])  || 1;
+    by[d].l += parseInt(r[C.retardo]) || 0;
   });
 
-  const dates=Object.keys(by).sort();
-  const tots =dates.map(d=>by[d].t);
-  const lates=dates.map(d=>by[d].l);
-  const pcts =dates.map(d=>by[d].t>0?+((by[d].t-by[d].l)/by[d].t*100).toFixed(1):0);
+  const dates = Object.keys(by).sort();
+  const tots  = dates.map(d => by[d].t);
+  const lates = dates.map(d => by[d].l);
+  const pcts  = dates.map(d => by[d].t > 0 ? +((by[d].t - by[d].l) / by[d].t * 100).toFixed(1) : 0);
 
-  const totT=rows.reduce((s,r)=>s+(parseInt(r[C.viajes])||1),0);
-  const totL=rows.reduce((s,r)=>s+(parseInt(r[C.retardo])||0),0);
-  const N=n=>n.toLocaleString('es-MX');
+  const totT = rows.reduce((s, r) => s + (parseInt(r[C.viajes])  || 1), 0);
+  const totL = rows.reduce((s, r) => s + (parseInt(r[C.retardo]) || 0), 0);
+  const N    = n => n.toLocaleString('es-MX');
 
-  document.getElementById('kTotal').textContent=N(totT);
-  document.getElementById('kTarde').textContent=N(totL);
-  document.getElementById('kPct').textContent=totT>0?((totT-totL)/totT*100).toFixed(1)+'%':'–';
+  document.getElementById('kTotal').textContent = N(totT);
+  document.getElementById('kTarde').textContent = N(totL);
+  document.getElementById('kPct').textContent   = totT > 0 ? ((totT - totL) / totT * 100).toFixed(1) + '%' : '–';
 
-  const labels=dates.map(d=>{
-    const dt=new Date(d+'T12:00:00');
-    return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
+  const labels = dates.map(d => {
+    const dt = new Date(d + 'T12:00:00');
+    return dt.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
   });
 
-  if(myChart) myChart.destroy();
-  const ctx=document.getElementById('chart').getContext('2d');
-  myChart=new Chart(ctx,{
-    type:'bar',
-    data:{labels, datasets:[
+  if (myChart) myChart.destroy();
+  const ctx = document.getElementById('chart').getContext('2d');
+  myChart = new Chart(ctx, {
+    type: 'bar',
+    data: { labels, datasets: [
       {
-        label:'En tiempo',
-        data:tots.map((t,i)=>t-lates[i]),
-        backgroundColor:'#7ed321',
-        stack:'s', order:2,
-        borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4},
-        barPercentage:.6,
+        label: 'En tiempo',
+        data: tots.map((t, i) => t - lates[i]),
+        backgroundColor: '#7ed321',
+        stack: 's', order: 2,
+        borderRadius: { topLeft:0, topRight:0, bottomLeft:4, bottomRight:4 },
+        barPercentage: .6,
       },
       {
-        label:'Inicios tarde',
-        data:lates,
-        backgroundColor:'#b0bac9',
-        stack:'s', order:2,
-        borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0},
-        barPercentage:.6,
+        label: 'Inicios tarde',
+        data: lates,
+        backgroundColor: '#b0bac9',
+        stack: 's', order: 2,
+        borderRadius: { topLeft:4, topRight:4, bottomLeft:0, bottomRight:0 },
+        barPercentage: .6,
       },
       {
-        label:'% Cumplimiento',
-        data:pcts, type:'line', yAxisID:'yP', order:1,
-        borderColor:'#5cb800', backgroundColor:'rgba(92,184,0,.07)',
-        borderWidth:2.5,
-        pointBackgroundColor:'#5cb800', pointBorderColor:'#fff',
-        pointBorderWidth:2, pointRadius:5, pointHoverRadius:7,
-        tension:.3, fill:true,
+        label: '% Cumplimiento',
+        data: pcts, type: 'line', yAxisID: 'yP', order: 1,
+        borderColor: '#5cb800', backgroundColor: 'rgba(92,184,0,.07)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#5cb800', pointBorderColor: '#fff',
+        pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7,
+        tension: .3, fill: true,
       },
     ]},
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#1a2236', borderColor:'#7ed321', borderWidth:1,
-          titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)', padding:12,
-          callbacks:{label(c){
-            return c.dataset.label==='% Cumplimiento'
-              ? '  % Cumpl.: '+c.raw+'%'
-              : '  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX');
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a2236', borderColor: '#7ed321', borderWidth: 1,
+          titleColor: '#fff', bodyColor: 'rgba(255,255,255,.65)', padding: 12,
+          callbacks: { label(c) {
+            return c.dataset.label === '% Cumplimiento'
+              ? '  % Cumpl.: ' + c.raw + '%'
+              : '  ' + c.dataset.label + ': ' + c.raw.toLocaleString('es-MX');
           }}
         }
       },
-      scales:{
-        x:{stacked:true, ticks:{color:'#6b7a99',font:{size:10,family:'Inter'}}, grid:{color:'rgba(0,0,0,.05)'}},
-        y:{stacked:true, ticks:{color:'#6b7a99',font:{size:10}}, grid:{color:'rgba(0,0,0,.05)'}},
-        yP:{position:'right', ticks:{color:'#5cb800',font:{size:10},callback:v=>v+'%'}, grid:{display:false}},
+      scales: {
+        x: { stacked: true, ticks: { color: '#6b7a99', font: { size: 10, family: 'Inter' } }, grid: { color: 'rgba(0,0,0,.05)' } },
+        y: { stacked: true, ticks: { color: '#6b7a99', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,.05)' } },
+        yP: { position: 'right', ticks: { color: '#5cb800', font: { size: 10 }, callback: v => v + '%' }, grid: { display: false } },
       }
     },
-    plugins:[{
-      id:'lbl',
-      afterDatasetsDraw(chart){
-        const ctx=chart.ctx;
-        const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
-        chart.getDatasetMeta(li).data.forEach((pt,i)=>{
-          const v=chart.data.datasets[li].data[i];
-          if(v==null) return;
-          ctx.save();ctx.fillStyle='#5a7a00';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-10);ctx.restore();
+    plugins: [{
+      id: 'lbl',
+      afterDatasetsDraw(chart) {
+        const ctx = chart.ctx;
+        const li = chart.data.datasets.findIndex(d => d.label === '% Cumplimiento');
+        chart.getDatasetMeta(li).data.forEach((pt, i) => {
+          const v = chart.data.datasets[li].data[i];
+          if (v == null) return;
+          ctx.save(); ctx.fillStyle = '#5a7a00'; ctx.font = 'bold 10px Inter';
+          ctx.textAlign = 'center'; ctx.fillText(v + '%', pt.x, pt.y - 10); ctx.restore();
         });
-        const bi=chart.data.datasets.findIndex(d=>d.label==='Inicios tarde');
-        chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
-          const v=chart.data.datasets[bi].data[i];
-          if(!v||bar.height<14) return;
-          ctx.save();ctx.fillStyle='#fff';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
+        const bi = chart.data.datasets.findIndex(d => d.label === 'Inicios tarde');
+        chart.getDatasetMeta(bi).data.forEach((bar, i) => {
+          const v = chart.data.datasets[bi].data[i];
+          if (!v || bar.height < 14) return;
+          ctx.save(); ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(v.toLocaleString('es-MX'), bar.x, bar.y + bar.height / 2); ctx.restore();
         });
-        const vi=chart.data.datasets.findIndex(d=>d.label==='En tiempo');
-        chart.getDatasetMeta(vi).data.forEach((bar,i)=>{
-          const v=chart.data.datasets[vi].data[i];
-          if(!v||bar.height<14) return;
-          ctx.save();ctx.fillStyle='rgba(0,0,0,.5)';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
+        const vi = chart.data.datasets.findIndex(d => d.label === 'En tiempo');
+        chart.getDatasetMeta(vi).data.forEach((bar, i) => {
+          const v = chart.data.datasets[vi].data[i];
+          if (!v || bar.height < 14) return;
+          ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.font = 'bold 10px Inter';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText(v.toLocaleString('es-MX'), bar.x, bar.y + bar.height / 2); ctx.restore();
         });
       }
     }]
   });
 
-  const parts=[];
-  if(f.sem)parts.push('Sem '+f.sem);
-  if(f.cli)parts.push(f.cli);
-  if(f.ger)parts.push('Ger: '+f.ger);
-  if(f.jef)parts.push('Jefe: '+f.jef);
-  const suffix = parts.length?' – '+parts.join(' · '):'';
-  document.getElementById('chartTitle').textContent='Inicios Tarde por Día'+suffix;
+  const parts = [];
+  if (f.sem) parts.push('Sem ' + f.sem);
+  if (f.cli) parts.push(f.cli);
+  if (f.ger) parts.push('Ger: ' + f.ger);
+  if (f.jef) parts.push('Jefe: ' + f.jef);
+  const suffix = parts.length ? ' – ' + parts.join(' · ') : '';
+  document.getElementById('chartTitle').textContent = 'Inicios Tarde por Día' + suffix;
 
   // ── Tabla por cliente ──
+  // Agrupa siempre por el campo cliente, sin importar qué filtros estén activos
   const byCli = {};
   rows.forEach(r => {
-    const cli = r[C.cliente] || '(Sin cliente)';
+    const cli = (r[C.cliente] || '').trim() || '(Sin cliente)';
     if (!byCli[cli]) byCli[cli] = { t: 0, l: 0 };
-    byCli[cli].t += parseInt(r[C.viajes]) || 1;
+    byCli[cli].t += parseInt(r[C.viajes])  || 1;
     byCli[cli].l += parseInt(r[C.retardo]) || 0;
   });
 
-  // Ordenar por % cumplimiento DESC
   const cliRows = Object.entries(byCli)
     .map(([cli, d]) => ({
       cli,
-      t: d.t,
-      l: d.l,
+      t:   d.t,
+      l:   d.l,
       pct: d.t > 0 ? (d.t - d.l) / d.t * 100 : 0,
     }))
-    .sort((a, b) => b.pct - a.pct);
+    .sort((a, b) => b.pct - a.pct);   // mayor cumplimiento primero
 
-  const tbody = document.getElementById('tableBody');
+  const tbody  = document.getElementById('tableBody');
   const tTitle = document.getElementById('tableTitle');
   const tCount = document.getElementById('tableCount');
 
@@ -531,19 +562,18 @@ function draw() {
     return;
   }
 
+  const badgeColors = ['#f59e0b', '#9ca3af', '#b45309'];
+
   tbody.innerHTML = cliRows.map((row, i) => {
     const pctFmt = row.pct.toFixed(1) + '%';
     const color  = pctColor(row.pct);
     const barW   = Math.min(100, row.pct).toFixed(1);
-
-    // Badge color: top3 dorado/plata/bronce, resto gris
-    const badgeColors = ['#f59e0b','#9ca3af','#b45309'];
     const badgeBg = i < 3 ? badgeColors[i] : '#e5e7eb';
     const badgeFg = i < 3 ? '#fff' : '#6b7a99';
 
     return `<tr>
-      <td>
-        <span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span>
+      <td class="td-rank">
+        <span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i + 1}</span>
       </td>
       <td class="td-cli" title="${row.cli}">${row.cli}</td>
       <td class="td-num">${N(row.t)}</td>
@@ -560,17 +590,17 @@ function draw() {
   }).join('');
 }
 
-function showLoad(t){document.getElementById('loadTxt').textContent=t;document.getElementById('loading').classList.remove('hidden')}
-function hideLoad(){document.getElementById('loading').classList.add('hidden')}
-function setStatus(t,ok){
-  document.getElementById('statusTxt').textContent=t;
-  const dot=document.getElementById('statusDot');
-  dot.style.background=ok?'#7ed321':'#e53e3e';
-  dot.style.animation=ok?'none':'pulse 2s infinite';
-  if(ok)dot.style.opacity='1';
+function showLoad(t) { document.getElementById('loadTxt').textContent = t; document.getElementById('loading').classList.remove('hidden'); }
+function hideLoad()  { document.getElementById('loading').classList.add('hidden'); }
+function setStatus(t, ok) {
+  document.getElementById('statusTxt').textContent = t;
+  const dot = document.getElementById('statusDot');
+  dot.style.background = ok ? '#7ed321' : '#e53e3e';
+  dot.style.animation  = ok ? 'none' : 'pulse 2s infinite';
+  if (ok) dot.style.opacity = '1';
 }
-function showErr(msg){document.getElementById('errMsg').textContent=msg;document.getElementById('errBanner').classList.remove('hidden')}
-function hideErr(){document.getElementById('errBanner').classList.add('hidden')}
+function showErr(msg) { document.getElementById('errMsg').textContent = msg; document.getElementById('errBanner').classList.remove('hidden'); }
+function hideErr()    { document.getElementById('errBanner').classList.add('hidden'); }
 </script>
 </body>
 </html>
