@@ -18,7 +18,6 @@
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-height:100vh}
 
-/* ── HEADER FRANJA ── */
 .page-header{
   background:var(--navy2);
   padding:1.1rem 2rem;
@@ -40,10 +39,8 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .s-dot{width:7px;height:7px;border-radius:50%;background:#aaa;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── LAYOUT ── */
 .layout{display:flex;height:calc(100vh - 68px)}
 
-/* ── SIDEBAR ── */
 .sidebar{
   width:220px;flex-shrink:0;background:var(--white);
   border-right:1px solid var(--border);
@@ -67,10 +64,8 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 }
 .btn-reset:hover{border-color:var(--green);color:var(--green);background:rgba(126,211,33,.06)}
 
-/* ── MAIN ── */
 .main{flex:1;overflow-y:auto;padding:1.35rem 1.5rem;display:flex;flex-direction:column;gap:1.1rem}
 
-/* ── KPI GRID (3 cards) ── */
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .kpi{
   background:var(--white);border-radius:12px;padding:1.1rem 1.25rem;
@@ -89,11 +84,10 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .kpi-val{font-size:2rem;font-weight:700;color:var(--kc,var(--green));line-height:1;letter-spacing:-.02em}
 .kpi-lbl{font-size:.68rem;font-weight:600;color:var(--muted);margin-top:.3rem;text-transform:uppercase;letter-spacing:.05em;line-height:1.4}
 
-/* ── CHART CARD ── */
 .chart-card{
   background:var(--white);border-radius:12px;padding:1.35rem 1.5rem;
   box-shadow:0 2px 10px rgba(26,34,54,.07);
-  display:flex;flex-direction:column;gap:.9rem;flex:1;min-height:380px;
+  display:flex;flex-direction:column;gap:.9rem;
 }
 .chart-hdr{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
 .chart-title{font-size:1rem;font-weight:700;color:var(--text)}
@@ -102,9 +96,48 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .leg{display:flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:500;color:var(--muted)}
 .leg-sq{width:10px;height:10px;border-radius:2px}
 .leg-line{width:18px;height:2.5px;border-radius:1px}
-.chart-wrap{flex:1;position:relative;min-height:300px}
+.chart-wrap{position:relative;height:280px}
 
-/* ── LOADING ── */
+/* ── TABLA ── */
+.table-card{
+  background:var(--white);border-radius:12px;
+  box-shadow:0 2px 10px rgba(26,34,54,.07);
+  overflow:hidden;
+}
+.table-hdr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.9rem 1.25rem;border-bottom:1px solid var(--border);
+}
+.table-hdr-title{font-size:.9rem;font-weight:700;color:var(--text)}
+.table-hdr-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem}
+.table-count{font-size:.72rem;color:var(--muted);background:var(--bg);border-radius:20px;padding:.2rem .65rem}
+.data-table{width:100%;border-collapse:collapse}
+.data-table thead th{
+  background:var(--navy2);color:rgba(255,255,255,.85);
+  font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:.65rem 1rem;text-align:left;white-space:nowrap;
+}
+.data-table thead th:not(:first-child){text-align:right}
+.data-table tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
+.data-table tbody tr:last-child{border-bottom:none}
+.data-table tbody tr:hover{background:#f7f9ff}
+.data-table tbody td{padding:.6rem 1rem;font-size:.8rem;color:var(--text)}
+.data-table tbody td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.td-cli{font-weight:600;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.td-num{color:var(--navy)}
+.td-late{color:var(--red);font-weight:600}
+.pct-cell{display:flex;align-items:center;justify-content:flex-end;gap:.55rem}
+.pct-bar-wrap{width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
+.pct-bar{height:100%;border-radius:3px;transition:width .4s}
+.pct-val{font-weight:700;font-size:.78rem;min-width:38px;text-align:right}
+.rank-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:20px;height:20px;border-radius:50%;
+  font-size:.65rem;font-weight:700;flex-shrink:0;
+  margin-right:.4rem;
+}
+.table-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.82rem}
+
 .loading{position:fixed;inset:0;z-index:500;background:rgba(16,22,38,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;backdrop-filter:blur(6px)}
 .loading.hidden{display:none}
 .spin{width:44px;height:44px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
@@ -112,7 +145,6 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .load-txt{font-size:.82rem;color:rgba(255,255,255,.45)}
 .load-logo img{height:26px;filter:brightness(10)}
 
-/* ── ERROR ── */
 .err{background:#fff5f5;border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:.75rem 1rem;font-size:.8rem;color:#c53030;display:flex;align-items:flex-start;gap:.5rem}
 .err.hidden{display:none}
 </style>
@@ -195,6 +227,32 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
       </div>
       <div class="chart-wrap"><canvas id="chart"></canvas></div>
     </div>
+
+    <!-- TABLA POR CLIENTE -->
+    <div class="table-card">
+      <div class="table-hdr">
+        <div>
+          <div class="table-hdr-title" id="tableTitle">Resumen por Cliente</div>
+          <div class="chart-sub">Ordenado por % cumplimiento · respeta los filtros activos</div>
+        </div>
+        <span class="table-count" id="tableCount">0 clientes</span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Cliente / Grupo</th>
+              <th>Total Viajes</th>
+              <th>Inicios Tarde</th>
+              <th>% Cumplimiento</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -230,7 +288,6 @@ function parseCSV(text) {
   const lines = text.trim().split('\n');
   if (lines.length < 2) return [];
   const hdrs = parseCSVLine(lines[0]);
-  console.log('Columnas ('+hdrs.length+'):', hdrs.join(' | '));
   const rows = [];
   for (let i = 1; i < lines.length; i++) {
     if (!lines[i].trim()) continue;
@@ -239,7 +296,6 @@ function parseCSV(text) {
     hdrs.forEach((h,idx) => { obj[h] = cols[idx]!==undefined ? cols[idx] : ''; });
     if (obj[C.fecha] && obj[C.fecha].trim()!=='') rows.push(obj);
   }
-  console.log('Filas:', rows.length, '| Ejemplo:', rows[0]);
   return rows;
 }
 
@@ -270,6 +326,7 @@ function norm(s) {
 }
 
 const uniq = arr => [...new Set(arr.filter(Boolean))].sort();
+
 function fillSelects() {
   fill('fSem', uniq(DATA.map(r=>r[C.semana])));
   fill('fCli', uniq(DATA.map(r=>r[C.cliente])));
@@ -299,10 +356,9 @@ function resetFilters(){
   draw();
 }
 
-function draw() {
-  if (!DATA.length) return;
+function filterRows() {
   const f = getF();
-  const rows = DATA.filter(r=>{
+  return DATA.filter(r=>{
     if(f.sem && r[C.semana]!==f.sem) return false;
     if(f.cli && r[C.cliente]!==f.cli) return false;
     if(f.ger && r[C.gerente]!==f.ger) return false;
@@ -312,7 +368,21 @@ function draw() {
     if(f.ff && d>f.ff) return false;
     return true;
   });
+}
 
+function pctColor(p) {
+  if (p >= 95) return '#16a34a';
+  if (p >= 85) return '#7ed321';
+  if (p >= 70) return '#d97706';
+  return '#e53e3e';
+}
+
+function draw() {
+  if (!DATA.length) return;
+  const f = getF();
+  const rows = filterRows();
+
+  // ── Gráfica por día ──
   const by={};
   rows.forEach(r=>{
     const d=norm(r[C.fecha]); if(!d) return;
@@ -345,7 +415,6 @@ function draw() {
     type:'bar',
     data:{labels, datasets:[
       {
-        // Total viajes arriba (en tiempo = verde, fondo)
         label:'En tiempo',
         data:tots.map((t,i)=>t-lates[i]),
         backgroundColor:'#7ed321',
@@ -354,7 +423,6 @@ function draw() {
         barPercentage:.6,
       },
       {
-        // Inicios tarde abajo (gris)
         label:'Inicios tarde',
         data:lates,
         backgroundColor:'#b0bac9',
@@ -397,7 +465,6 @@ function draw() {
       id:'lbl',
       afterDatasetsDraw(chart){
         const ctx=chart.ctx;
-        // % sobre la línea
         const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
         chart.getDatasetMeta(li).data.forEach((pt,i)=>{
           const v=chart.data.datasets[li].data[i];
@@ -405,7 +472,6 @@ function draw() {
           ctx.save();ctx.fillStyle='#5a7a00';ctx.font='bold 10px Inter';
           ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-10);ctx.restore();
         });
-        // número dentro barra gris (inicios tarde)
         const bi=chart.data.datasets.findIndex(d=>d.label==='Inicios tarde');
         chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
           const v=chart.data.datasets[bi].data[i];
@@ -414,7 +480,6 @@ function draw() {
           ctx.textAlign='center';ctx.textBaseline='middle';
           ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
         });
-        // número dentro barra verde (en tiempo)
         const vi=chart.data.datasets.findIndex(d=>d.label==='En tiempo');
         chart.getDatasetMeta(vi).data.forEach((bar,i)=>{
           const v=chart.data.datasets[vi].data[i];
@@ -432,8 +497,67 @@ function draw() {
   if(f.cli)parts.push(f.cli);
   if(f.ger)parts.push('Ger: '+f.ger);
   if(f.jef)parts.push('Jefe: '+f.jef);
-  document.getElementById('chartTitle').textContent=
-    'Inicios Tarde por Día'+(parts.length?' – '+parts.join(' · '):'');
+  const suffix = parts.length?' – '+parts.join(' · '):'';
+  document.getElementById('chartTitle').textContent='Inicios Tarde por Día'+suffix;
+
+  // ── Tabla por cliente ──
+  const byCli = {};
+  rows.forEach(r => {
+    const cli = r[C.cliente] || '(Sin cliente)';
+    if (!byCli[cli]) byCli[cli] = { t: 0, l: 0 };
+    byCli[cli].t += parseInt(r[C.viajes]) || 1;
+    byCli[cli].l += parseInt(r[C.retardo]) || 0;
+  });
+
+  // Ordenar por % cumplimiento DESC
+  const cliRows = Object.entries(byCli)
+    .map(([cli, d]) => ({
+      cli,
+      t: d.t,
+      l: d.l,
+      pct: d.t > 0 ? (d.t - d.l) / d.t * 100 : 0,
+    }))
+    .sort((a, b) => b.pct - a.pct);
+
+  const tbody = document.getElementById('tableBody');
+  const tTitle = document.getElementById('tableTitle');
+  const tCount = document.getElementById('tableCount');
+
+  tTitle.textContent = 'Resumen por Cliente' + suffix;
+  tCount.textContent = cliRows.length + (cliRows.length === 1 ? ' cliente' : ' clientes');
+
+  if (!cliRows.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="table-empty">Sin datos para los filtros seleccionados</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = cliRows.map((row, i) => {
+    const pctFmt = row.pct.toFixed(1) + '%';
+    const color  = pctColor(row.pct);
+    const barW   = Math.min(100, row.pct).toFixed(1);
+
+    // Badge color: top3 dorado/plata/bronce, resto gris
+    const badgeColors = ['#f59e0b','#9ca3af','#b45309'];
+    const badgeBg = i < 3 ? badgeColors[i] : '#e5e7eb';
+    const badgeFg = i < 3 ? '#fff' : '#6b7a99';
+
+    return `<tr>
+      <td>
+        <span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span>
+      </td>
+      <td class="td-cli" title="${row.cli}">${row.cli}</td>
+      <td class="td-num">${N(row.t)}</td>
+      <td class="td-late">${N(row.l)}</td>
+      <td>
+        <div class="pct-cell">
+          <div class="pct-bar-wrap">
+            <div class="pct-bar" style="width:${barW}%;background:${color}"></div>
+          </div>
+          <span class="pct-val" style="color:${color}">${pctFmt}</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
 }
 
 function showLoad(t){document.getElementById('loadTxt').textContent=t;document.getElementById('loading').classList.remove('hidden')}
