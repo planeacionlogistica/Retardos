@@ -18,10 +18,8 @@
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-height:100vh}
 
-/* ── HEADER ── */
 .page-header{
-  background:var(--navy2);
-  padding:1.1rem 2rem;
+  background:var(--navy2);padding:1.1rem 2rem;
   border-bottom:3px solid var(--green);
   display:flex;align-items:center;justify-content:space-between;
   box-shadow:0 2px 16px rgba(0,0,0,.25);
@@ -41,22 +39,15 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
 .s-dot{width:7px;height:7px;border-radius:50%;background:#aaa;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-/* ── LAYOUT — scroll libre ── */
-.layout{
-  display:flex;
-  align-items:flex-start;   /* sidebar no se estira */
-  min-height:calc(100vh - 68px);
-}
+.layout{display:flex;align-items:flex-start;min-height:calc(100vh - 68px)}
 
-/* ── SIDEBAR — sticky, no corta la página ── */
 .sidebar{
   width:220px;flex-shrink:0;background:var(--white);
   border-right:1px solid var(--border);
   padding:1.1rem .95rem;
   display:flex;flex-direction:column;gap:1rem;
-  position:sticky;top:68px;          /* pegado bajo el header */
-  height:calc(100vh - 68px);
-  overflow-y:auto;
+  position:sticky;top:68px;
+  height:calc(100vh - 68px);overflow-y:auto;
 }
 .sb-title{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-bottom:.5rem;border-bottom:1px solid var(--border)}
 .fg{display:flex;flex-direction:column;gap:.28rem}
@@ -75,15 +66,8 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
 }
 .btn-reset:hover{border-color:var(--green);color:var(--green);background:rgba(126,211,33,.06)}
 
-/* ── MAIN — crece libremente, sin overflow oculto ── */
-.main{
-  flex:1;
-  padding:1.35rem 1.5rem;
-  display:flex;flex-direction:column;gap:1.1rem;
-  min-width:0;        /* evita desbordamiento en flex */
-}
+.main{flex:1;padding:1.35rem 1.5rem;display:flex;flex-direction:column;gap:1.1rem;min-width:0}
 
-/* ── KPI GRID ── */
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .kpi{
   background:var(--white);border-radius:12px;padding:1.1rem 1.25rem;
@@ -93,16 +77,11 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
   transition:transform .15s,box-shadow .2s;
 }
 .kpi:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(26,34,54,.12)}
-.kpi::after{
-  content:"";position:absolute;bottom:-18px;right:-18px;
-  width:80px;height:80px;border-radius:50%;
-  background:var(--kc,var(--green));opacity:.06;
-}
+.kpi::after{content:"";position:absolute;bottom:-18px;right:-18px;width:80px;height:80px;border-radius:50%;background:var(--kc,var(--green));opacity:.06}
 .kpi-icon{font-size:1.3rem;margin-bottom:.4rem}
 .kpi-val{font-size:2rem;font-weight:700;color:var(--kc,var(--green));line-height:1;letter-spacing:-.02em}
 .kpi-lbl{font-size:.68rem;font-weight:600;color:var(--muted);margin-top:.3rem;text-transform:uppercase;letter-spacing:.05em;line-height:1.4}
 
-/* ── CHART CARD ── */
 .chart-card{
   background:var(--white);border-radius:12px;padding:1.1rem 1.35rem;
   box-shadow:0 2px 10px rgba(26,34,54,.07);
@@ -117,18 +96,25 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
 .leg-line{width:18px;height:2.5px;border-radius:1px}
 .chart-wrap{position:relative;height:252px}
 
-/* ── TABLA ── */
+/* ── TABLAS ── */
+.tables-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.1rem;
+}
 .table-card{
   background:var(--white);border-radius:12px;
   box-shadow:0 2px 10px rgba(26,34,54,.07);
   overflow:hidden;
-  margin-bottom:1.5rem;   /* respiro al final de la página */
 }
+.table-card.full-width{grid-column:1/-1}
 .table-hdr{
   display:flex;align-items:center;justify-content:space-between;
   padding:.85rem 1.25rem;border-bottom:1px solid var(--border);
 }
+.table-hdr-left{}
 .table-hdr-title{font-size:.9rem;font-weight:700;color:var(--text)}
+.table-hdr-icon{font-size:.9rem;margin-right:.35rem}
 .table-hdr-sub{font-size:.7rem;color:var(--muted);margin-top:.1rem}
 .table-count{font-size:.72rem;color:var(--muted);background:var(--bg);border-radius:20px;padding:.2rem .65rem;white-space:nowrap}
 .data-table{width:100%;border-collapse:collapse}
@@ -147,7 +133,7 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
 .td-num{color:var(--navy)}
 .td-late{color:var(--red);font-weight:600}
 .pct-cell{display:flex;align-items:center;justify-content:flex-end;gap:.55rem}
-.pct-bar-wrap{width:80px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
+.pct-bar-wrap{width:70px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;flex-shrink:0}
 .pct-bar{height:100%;border-radius:3px;transition:width .4s}
 .pct-val{font-weight:700;font-size:.8rem;min-width:42px;text-align:right}
 .rank-badge{
@@ -155,17 +141,15 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
   width:22px;height:22px;border-radius:50%;
   font-size:.65rem;font-weight:700;flex-shrink:0;
 }
-.table-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.82rem}
+.table-empty{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.82rem}
+.section-end{margin-bottom:1.5rem}
 
-/* ── LOADING ── */
 .loading{position:fixed;inset:0;z-index:500;background:rgba(16,22,38,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;backdrop-filter:blur(6px)}
 .loading.hidden{display:none}
 .spin{width:44px;height:44px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .load-txt{font-size:.82rem;color:rgba(255,255,255,.45)}
 .load-logo img{height:26px;filter:brightness(10)}
-
-/* ── ERROR ── */
 .err{background:#fff5f5;border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:.75rem 1rem;font-size:.8rem;color:#c53030;display:flex;align-items:flex-start;gap:.5rem}
 .err.hidden{display:none}
 </style>
@@ -249,36 +233,83 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
       <div class="chart-wrap"><canvas id="chart"></canvas></div>
     </div>
 
+    <!-- Tabla cliente: ancho completo -->
     <div class="table-card">
       <div class="table-hdr">
-        <div>
-          <div class="table-hdr-title" id="tableTitle">Resumen por Cliente</div>
+        <div class="table-hdr-left">
+          <div class="table-hdr-title"><span class="table-hdr-icon">🏢</span><span id="tCliTitle">Resumen por Cliente</span></div>
           <div class="table-hdr-sub">Ordenado por % cumplimiento · respeta los filtros activos</div>
         </div>
-        <span class="table-count" id="tableCount">0 clientes</span>
+        <span class="table-count" id="tCliCount">0 clientes</span>
       </div>
       <div style="overflow-x:auto">
         <table class="data-table">
-          <thead>
-            <tr>
-              <th style="width:44px">#</th>
-              <th>Cliente / Grupo</th>
-              <th>Total Viajes</th>
-              <th>Inicios Tarde</th>
-              <th>% Cumplimiento</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
+          <thead><tr>
+            <th style="width:44px">#</th>
+            <th>Cliente / Grupo</th>
+            <th>Total Viajes</th>
+            <th>Inicios Tarde</th>
+            <th>% Cumplimiento</th>
+          </tr></thead>
+          <tbody id="tCliBody"></tbody>
         </table>
       </div>
     </div>
 
+    <!-- Gerente y Jefe: side by side -->
+    <div class="tables-grid section-end">
+
+      <div class="table-card">
+        <div class="table-hdr">
+          <div class="table-hdr-left">
+            <div class="table-hdr-title"><span class="table-hdr-icon">👔</span><span id="tGerTitle">Resumen por Gerente</span></div>
+            <div class="table-hdr-sub">Ordenado por % cumplimiento</div>
+          </div>
+          <span class="table-count" id="tGerCount">0 gerentes</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead><tr>
+              <th style="width:44px">#</th>
+              <th>Gerente</th>
+              <th>Total Viajes</th>
+              <th>Inicios Tarde</th>
+              <th>% Cumplimiento</th>
+            </tr></thead>
+            <tbody id="tGerBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-hdr">
+          <div class="table-hdr-left">
+            <div class="table-hdr-title"><span class="table-hdr-icon">🗂️</span><span id="tJefTitle">Resumen por Jefe</span></div>
+            <div class="table-hdr-sub">Ordenado por % cumplimiento</div>
+          </div>
+          <span class="table-count" id="tJefCount">0 jefes</span>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="data-table">
+            <thead><tr>
+              <th style="width:44px">#</th>
+              <th>Jefe</th>
+              <th>Total Viajes</th>
+              <th>Inicios Tarde</th>
+              <th>% Cumplimiento</th>
+            </tr></thead>
+            <tbody id="tJefBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </main>
 </div>
 
 <script>
 const SHEET_ID = '1UrOcFLeHEUQR84302e86c08Ny3fWclUA7JGAYtEkuyQ';
-const CSV_URL  = 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/export?format=csv&gid=0';
+const CSV_URL  = 'https://docs.google.com/spreadsheets/d/'+SHEET_ID+'/export?format=csv&gid=0';
 
 const C = {
   fecha:   'start_date',
@@ -294,279 +325,146 @@ let DATA = [], myChart = null;
 window.addEventListener('DOMContentLoaded', loadSheet);
 
 function parseCSVLine(line) {
-  const cols = []; let cur = '', inQ = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') { if (inQ && line[i+1]==='"'){cur+='"';i++;}else{inQ=!inQ;} }
-    else if (ch===',' && !inQ){cols.push(cur.trim());cur='';}
+  const cols=[]; let cur='', inQ=false;
+  for(let i=0;i<line.length;i++){
+    const ch=line[i];
+    if(ch==='"'){if(inQ&&line[i+1]==='"'){cur+='"';i++;}else{inQ=!inQ;}}
+    else if(ch===','&&!inQ){cols.push(cur.trim());cur='';}
     else{cur+=ch;}
   }
   cols.push(cur.trim()); return cols;
 }
 
 function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  if (lines.length < 2) return [];
-  const hdrs = parseCSVLine(lines[0]);
-  console.log('Columnas ('+hdrs.length+'):', hdrs.join(' | '));
-  const rows = [];
-  for (let i = 1; i < lines.length; i++) {
-    if (!lines[i].trim()) continue;
-    const cols = parseCSVLine(lines[i]);
-    const obj = {};
-    hdrs.forEach((h,idx) => { obj[h] = cols[idx]!==undefined ? cols[idx] : ''; });
-    if (obj[C.fecha] && obj[C.fecha].trim()!=='') rows.push(obj);
+  const lines=text.trim().split('\n');
+  if(lines.length<2) return [];
+  const hdrs=parseCSVLine(lines[0]);
+  console.log('Columnas:',hdrs.join(' | '));
+  const rows=[];
+  for(let i=1;i<lines.length;i++){
+    if(!lines[i].trim()) continue;
+    const cols=parseCSVLine(lines[i]);
+    const obj={};
+    hdrs.forEach((h,idx)=>{ obj[h]=cols[idx]!==undefined?cols[idx]:''; });
+    if(obj[C.fecha]&&obj[C.fecha].trim()!=='') rows.push(obj);
   }
-  console.log('Filas cargadas:', rows.length);
-  const uniqs = [...new Set(rows.map(r=>r[C.cliente]).filter(Boolean))];
-  console.log('Clientes únicos ('+uniqs.length+'):', uniqs.slice(0,15));
+  console.log('Filas:',rows.length);
   return rows;
 }
 
 async function loadSheet() {
   showLoad('Conectando con Google Sheets…'); hideErr();
   try {
-    const res = await fetch(CSV_URL);
-    if (!res.ok) throw new Error('HTTP '+res.status+' — verifica que el sheet sea público');
+    const res=await fetch(CSV_URL);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     showLoad('Procesando datos…');
-    const text = await res.text();
-    DATA = parseCSV(text);
-    if (!DATA.length) throw new Error('Sin filas válidas. Verifica columna "start_date".');
-    console.log('Columnas disponibles:', Object.keys(DATA[0]));
-    setStatus('Conectado · '+DATA.length.toLocaleString('es-MX')+' registros', true);
+    DATA=parseCSV(await res.text());
+    if(!DATA.length) throw new Error('Sin filas válidas. Verifica columna "start_date".');
+    setStatus('Conectado · '+DATA.length.toLocaleString('es-MX')+' registros',true);
     hideLoad(); fillSelects(); draw();
-  } catch(e) {
-    hideLoad(); setStatus('Error al cargar', false); showErr(e.message);
-    console.error(e);
+  } catch(e){
+    hideLoad(); setStatus('Error al cargar',false); showErr(e.message); console.error(e);
   }
 }
 
-function norm(s) {
-  if (!s) return '';
-  s = s.trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
-  const p = s.split('/');
-  if (p.length===3 && p[2].length===4) return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
-  if (p.length===3 && p[0].length===4) return p[0]+'-'+p[1].padStart(2,'0')+'-'+p[2].padStart(2,'0');
+function norm(s){
+  if(!s) return '';
+  s=s.trim();
+  if(/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0,10);
+  const p=s.split('/');
+  if(p.length===3&&p[2].length===4) return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+  if(p.length===3&&p[0].length===4) return p[0]+'-'+p[1].padStart(2,'0')+'-'+p[2].padStart(2,'0');
   return s;
 }
 
-const uniq = arr => [...new Set(arr.filter(v => v && v.trim()))].sort();
+const uniq=arr=>[...new Set(arr.filter(v=>v&&v.trim()))].sort();
 
-function fillSelects() {
-  fill('fSem', uniq(DATA.map(r => r[C.semana])));
-  fill('fCli', uniq(DATA.map(r => r[C.cliente])));
-  fill('fGer', uniq(DATA.map(r => r[C.gerente])));
-  fill('fJef', uniq(DATA.map(r => r[C.jefe])));
+function fillSelects(){
+  fill('fSem',uniq(DATA.map(r=>r[C.semana])));
+  fill('fCli',uniq(DATA.map(r=>r[C.cliente])));
+  fill('fGer',uniq(DATA.map(r=>r[C.gerente])));
+  fill('fJef',uniq(DATA.map(r=>r[C.jefe])));
 }
-
-function fill(id, vals) {
-  const sel = document.getElementById(id);
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">Todos</option>';
-  vals.forEach(v => {
-    const opt = document.createElement('option');
-    opt.value = v; opt.textContent = v;
-    sel.appendChild(opt);
-  });
-  if (vals.includes(cur)) sel.value = cur;
+function fill(id,vals){
+  const sel=document.getElementById(id), cur=sel.value;
+  sel.innerHTML='<option value="">Todos</option>';
+  vals.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
+  if(vals.includes(cur)) sel.value=cur;
 }
-
-function getF() {
-  return {
-    sem: document.getElementById('fSem').value,
-    cli: document.getElementById('fCli').value,
-    ger: document.getElementById('fGer').value,
-    jef: document.getElementById('fJef').value,
-    fi:  document.getElementById('fFi').value,
-    ff:  document.getElementById('fFf').value,
+function getF(){
+  return{
+    sem:document.getElementById('fSem').value,
+    cli:document.getElementById('fCli').value,
+    ger:document.getElementById('fGer').value,
+    jef:document.getElementById('fJef').value,
+    fi: document.getElementById('fFi').value,
+    ff: document.getElementById('fFf').value,
   };
 }
-
-function resetFilters() {
-  ['fSem','fCli','fGer','fJef'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('fFi').value = '';
-  document.getElementById('fFf').value = '';
+function resetFilters(){
+  ['fSem','fCli','fGer','fJef'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fFi').value='';
+  document.getElementById('fFf').value='';
   draw();
 }
-
-function filterRows() {
-  const f = getF();
-  return DATA.filter(r => {
-    if (f.sem && r[C.semana]  !== f.sem) return false;
-    if (f.cli && r[C.cliente] !== f.cli) return false;
-    if (f.ger && r[C.gerente] !== f.ger) return false;
-    if (f.jef && r[C.jefe]    !== f.jef) return false;
-    const d = norm(r[C.fecha]);
-    if (f.fi && d < f.fi) return false;
-    if (f.ff && d > f.ff) return false;
+function filterRows(){
+  const f=getF();
+  return DATA.filter(r=>{
+    if(f.sem&&r[C.semana] !==f.sem) return false;
+    if(f.cli&&r[C.cliente]!==f.cli) return false;
+    if(f.ger&&r[C.gerente]!==f.ger) return false;
+    if(f.jef&&r[C.jefe]   !==f.jef) return false;
+    const d=norm(r[C.fecha]);
+    if(f.fi&&d<f.fi) return false;
+    if(f.ff&&d>f.ff) return false;
     return true;
   });
 }
 
-function pctColor(p) {
-  if (p >= 95) return '#16a34a';
-  if (p >= 85) return '#7ed321';
-  if (p >= 70) return '#d97706';
+function pctColor(p){
+  if(p>=95) return '#16a34a';
+  if(p>=85) return '#7ed321';
+  if(p>=70) return '#d97706';
   return '#e53e3e';
 }
 
-function draw() {
-  if (!DATA.length) return;
-  const rows = filterRows();
-  const f    = getF();
-
-  // ── KPIs y gráfica por día ──
-  const by = {};
-  rows.forEach(r => {
-    const d = norm(r[C.fecha]); if (!d) return;
-    if (!by[d]) by[d] = { t: 0, l: 0 };
-    by[d].t += parseInt(r[C.viajes])  || 1;
-    by[d].l += parseInt(r[C.retardo]) || 0;
+// Genera HTML de una tabla agrupada por un campo
+function buildTable(rows, field, bodyId, titleId, countId, titleBase, countWord) {
+  const byKey={};
+  rows.forEach(r=>{
+    const k=(r[field]||'').trim()||'(Sin asignar)';
+    if(!byKey[k]) byKey[k]={t:0,l:0};
+    byKey[k].t+=parseInt(r[C.viajes]) ||1;
+    byKey[k].l+=parseInt(r[C.retardo])||0;
   });
 
-  const dates = Object.keys(by).sort();
-  const tots  = dates.map(d => by[d].t);
-  const lates = dates.map(d => by[d].l);
-  const pcts  = dates.map(d => by[d].t > 0 ? +((by[d].t-by[d].l)/by[d].t*100).toFixed(1) : 0);
+  const sorted=Object.entries(byKey)
+    .map(([k,d])=>({k, t:d.t, l:d.l, pct:d.t>0?(d.t-d.l)/d.t*100:0}))
+    .sort((a,b)=>b.pct-a.pct);
 
-  const totT = rows.reduce((s,r) => s+(parseInt(r[C.viajes])||1),  0);
-  const totL = rows.reduce((s,r) => s+(parseInt(r[C.retardo])||0), 0);
-  const N    = n => n.toLocaleString('es-MX');
+  document.getElementById(countId).textContent =
+    sorted.length+(sorted.length===1?' '+countWord:' '+countWord+'s');
 
-  document.getElementById('kTotal').textContent = N(totT);
-  document.getElementById('kTarde').textContent = N(totL);
-  document.getElementById('kPct').textContent   = totT>0 ? ((totT-totL)/totT*100).toFixed(1)+'%' : '–';
+  const N=n=>n.toLocaleString('es-MX');
+  const badgeColors=['#f59e0b','#9ca3af','#b45309'];
 
-  const labels = dates.map(d => {
-    const dt = new Date(d+'T12:00:00');
-    return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
-  });
-
-  if (myChart) myChart.destroy();
-  const ctx = document.getElementById('chart').getContext('2d');
-  myChart = new Chart(ctx, {
-    type:'bar',
-    data:{ labels, datasets:[
-      {
-        label:'En tiempo',
-        data: tots.map((t,i)=>t-lates[i]),
-        backgroundColor:'#7ed321', stack:'s', order:2,
-        borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4},
-        barPercentage:.6,
-      },
-      {
-        label:'Inicios tarde',
-        data: lates,
-        backgroundColor:'#b0bac9', stack:'s', order:2,
-        borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0},
-        barPercentage:.6,
-      },
-      {
-        label:'% Cumplimiento',
-        data:pcts, type:'line', yAxisID:'yP', order:1,
-        borderColor:'#5cb800', backgroundColor:'rgba(92,184,0,.07)',
-        borderWidth:2.5,
-        pointBackgroundColor:'#5cb800', pointBorderColor:'#fff',
-        pointBorderWidth:2, pointRadius:5, pointHoverRadius:7,
-        tension:.3, fill:true,
-      },
-    ]},
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      interaction:{mode:'index',intersect:false},
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#1a2236', borderColor:'#7ed321', borderWidth:1,
-          titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)', padding:12,
-          callbacks:{label(c){
-            return c.dataset.label==='% Cumplimiento'
-              ? '  % Cumpl.: '+c.raw+'%'
-              : '  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX');
-          }}
-        }
-      },
-      scales:{
-        x:{ stacked:true, ticks:{color:'#6b7a99',font:{size:10,family:'Inter'}}, grid:{color:'rgba(0,0,0,.05)'} },
-        y:{ stacked:true, ticks:{color:'#6b7a99',font:{size:10}}, grid:{color:'rgba(0,0,0,.05)'} },
-        yP:{ position:'right', ticks:{color:'#5cb800',font:{size:10},callback:v=>v+'%'}, grid:{display:false} },
-      }
-    },
-    plugins:[{
-      id:'lbl',
-      afterDatasetsDraw(chart){
-        const ctx=chart.ctx;
-        const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
-        chart.getDatasetMeta(li).data.forEach((pt,i)=>{
-          const v=chart.data.datasets[li].data[i];
-          if(v==null) return;
-          ctx.save();ctx.fillStyle='#5a7a00';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-10);ctx.restore();
-        });
-        const bi=chart.data.datasets.findIndex(d=>d.label==='Inicios tarde');
-        chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
-          const v=chart.data.datasets[bi].data[i];
-          if(!v||bar.height<14) return;
-          ctx.save();ctx.fillStyle='#fff';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
-        });
-        const vi=chart.data.datasets.findIndex(d=>d.label==='En tiempo');
-        chart.getDatasetMeta(vi).data.forEach((bar,i)=>{
-          const v=chart.data.datasets[vi].data[i];
-          if(!v||bar.height<14) return;
-          ctx.save();ctx.fillStyle='rgba(0,0,0,.5)';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
-        });
-      }
-    }]
-  });
-
-  const parts=[];
-  if(f.sem) parts.push('Sem '+f.sem);
-  if(f.cli) parts.push(f.cli);
-  if(f.ger) parts.push('Ger: '+f.ger);
-  if(f.jef) parts.push('Jefe: '+f.jef);
-  const suffix = parts.length ? ' – '+parts.join(' · ') : '';
-  document.getElementById('chartTitle').textContent = 'Inicios Tarde por Día'+suffix;
-
-  // ── Tabla por cliente — agrupa las filas ya filtradas ──
-  const byCli = {};
-  rows.forEach(r => {
-    const cli = (r[C.cliente]||'').trim() || '(Sin cliente)';
-    if (!byCli[cli]) byCli[cli] = { t:0, l:0 };
-    byCli[cli].t += parseInt(r[C.viajes])  || 1;
-    byCli[cli].l += parseInt(r[C.retardo]) || 0;
-  });
-
-  const cliRows = Object.entries(byCli)
-    .map(([cli,d]) => ({ cli, t:d.t, l:d.l, pct: d.t>0 ? (d.t-d.l)/d.t*100 : 0 }))
-    .sort((a,b) => b.pct - a.pct);
-
-  const tbody  = document.getElementById('tableBody');
-  document.getElementById('tableTitle').textContent  = 'Resumen por Cliente'+suffix;
-  document.getElementById('tableCount').textContent  = cliRows.length+(cliRows.length===1?' cliente':' clientes');
-
-  if (!cliRows.length) {
-    tbody.innerHTML = '<tr><td colspan="5" class="table-empty">Sin datos para los filtros seleccionados</td></tr>';
+  if(!sorted.length){
+    document.getElementById(bodyId).innerHTML=
+      '<tr><td colspan="5" class="table-empty">Sin datos para los filtros seleccionados</td></tr>';
     return;
   }
 
-  const badgeColors = ['#f59e0b','#9ca3af','#b45309'];
-
-  tbody.innerHTML = cliRows.map((row,i) => {
-    const pctFmt  = row.pct.toFixed(1)+'%';
-    const color   = pctColor(row.pct);
-    const barW    = Math.min(100, row.pct).toFixed(1);
-    const badgeBg = i<3 ? badgeColors[i] : '#e5e7eb';
-    const badgeFg = i<3 ? '#fff' : '#6b7a99';
+  document.getElementById(bodyId).innerHTML=sorted.map((row,i)=>{
+    const pctFmt=row.pct.toFixed(1)+'%';
+    const color=pctColor(row.pct);
+    const barW=Math.min(100,row.pct).toFixed(1);
+    const badgeBg=i<3?badgeColors[i]:'#e5e7eb';
+    const badgeFg=i<3?'#fff':'#6b7a99';
     return `<tr>
       <td style="width:44px">
         <span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span>
       </td>
-      <td class="td-cli" title="${row.cli}">${row.cli}</td>
+      <td class="td-cli" title="${row.k}">${row.k}</td>
       <td class="td-num">${N(row.t)}</td>
       <td class="td-late">${N(row.l)}</td>
       <td>
@@ -581,8 +479,120 @@ function draw() {
   }).join('');
 }
 
-function showLoad(t){ document.getElementById('loadTxt').textContent=t; document.getElementById('loading').classList.remove('hidden'); }
-function hideLoad(){ document.getElementById('loading').classList.add('hidden'); }
+function draw(){
+  if(!DATA.length) return;
+  const rows=filterRows();
+  const f=getF();
+
+  // ── KPIs ──
+  const totT=rows.reduce((s,r)=>s+(parseInt(r[C.viajes]) ||1),0);
+  const totL=rows.reduce((s,r)=>s+(parseInt(r[C.retardo])||0),0);
+  const N=n=>n.toLocaleString('es-MX');
+  document.getElementById('kTotal').textContent=N(totT);
+  document.getElementById('kTarde').textContent=N(totL);
+  document.getElementById('kPct').textContent=totT>0?((totT-totL)/totT*100).toFixed(1)+'%':'–';
+
+  // ── Gráfica por día ──
+  const by={};
+  rows.forEach(r=>{
+    const d=norm(r[C.fecha]); if(!d) return;
+    if(!by[d]) by[d]={t:0,l:0};
+    by[d].t+=parseInt(r[C.viajes]) ||1;
+    by[d].l+=parseInt(r[C.retardo])||0;
+  });
+  const dates=Object.keys(by).sort();
+  const tots =dates.map(d=>by[d].t);
+  const lates=dates.map(d=>by[d].l);
+  const pcts =dates.map(d=>by[d].t>0?+((by[d].t-by[d].l)/by[d].t*100).toFixed(1):0);
+  const labels=dates.map(d=>{
+    const dt=new Date(d+'T12:00:00');
+    return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
+  });
+
+  if(myChart) myChart.destroy();
+  const ctx=document.getElementById('chart').getContext('2d');
+  myChart=new Chart(ctx,{
+    type:'bar',
+    data:{labels,datasets:[
+      {label:'En tiempo',data:tots.map((t,i)=>t-lates[i]),backgroundColor:'#7ed321',
+       stack:'s',order:2,borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4},barPercentage:.6},
+      {label:'Inicios tarde',data:lates,backgroundColor:'#b0bac9',
+       stack:'s',order:2,borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0},barPercentage:.6},
+      {label:'% Cumplimiento',data:pcts,type:'line',yAxisID:'yP',order:1,
+       borderColor:'#5cb800',backgroundColor:'rgba(92,184,0,.07)',borderWidth:2.5,
+       pointBackgroundColor:'#5cb800',pointBorderColor:'#fff',pointBorderWidth:2,
+       pointRadius:5,pointHoverRadius:7,tension:.3,fill:true},
+    ]},
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#1a2236',borderColor:'#7ed321',borderWidth:1,
+          titleColor:'#fff',bodyColor:'rgba(255,255,255,.65)',padding:12,
+          callbacks:{label(c){
+            return c.dataset.label==='% Cumplimiento'
+              ?'  % Cumpl.: '+c.raw+'%'
+              :'  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX');
+          }}
+        }
+      },
+      scales:{
+        x:{stacked:true,ticks:{color:'#6b7a99',font:{size:10,family:'Inter'}},grid:{color:'rgba(0,0,0,.05)'}},
+        y:{stacked:true,ticks:{color:'#6b7a99',font:{size:10}},grid:{color:'rgba(0,0,0,.05)'}},
+        yP:{position:'right',ticks:{color:'#5cb800',font:{size:10},callback:v=>v+'%'},grid:{display:false}},
+      }
+    },
+    plugins:[{
+      id:'lbl',
+      afterDatasetsDraw(chart){
+        const ctx=chart.ctx;
+        const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
+        chart.getDatasetMeta(li).data.forEach((pt,i)=>{
+          const v=chart.data.datasets[li].data[i]; if(v==null) return;
+          ctx.save();ctx.fillStyle='#5a7a00';ctx.font='bold 10px Inter';
+          ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-10);ctx.restore();
+        });
+        const bi=chart.data.datasets.findIndex(d=>d.label==='Inicios tarde');
+        chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
+          const v=chart.data.datasets[bi].data[i]; if(!v||bar.height<14) return;
+          ctx.save();ctx.fillStyle='#fff';ctx.font='bold 10px Inter';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
+        });
+        const vi=chart.data.datasets.findIndex(d=>d.label==='En tiempo');
+        chart.getDatasetMeta(vi).data.forEach((bar,i)=>{
+          const v=chart.data.datasets[vi].data[i]; if(!v||bar.height<14) return;
+          ctx.save();ctx.fillStyle='rgba(0,0,0,.5)';ctx.font='bold 10px Inter';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
+        });
+      }
+    }]
+  });
+
+  // Suffix para títulos
+  const parts=[];
+  if(f.sem) parts.push('Sem '+f.sem);
+  if(f.cli) parts.push(f.cli);
+  if(f.ger) parts.push('Ger: '+f.ger);
+  if(f.jef) parts.push('Jefe: '+f.jef);
+  const suffix=parts.length?' – '+parts.join(' · '):'';
+
+  document.getElementById('chartTitle').textContent='Inicios Tarde por Día'+suffix;
+  document.getElementById('tCliTitle').textContent ='Resumen por Cliente'+suffix;
+  document.getElementById('tGerTitle').textContent ='Resumen por Gerente'+suffix;
+  document.getElementById('tJefTitle').textContent ='Resumen por Jefe'+suffix;
+
+  // ── Las 3 tablas ──
+  buildTable(rows, C.cliente, 'tCliBody', 'tCliTitle', 'tCliCount', 'Resumen por Cliente', 'cliente');
+  buildTable(rows, C.gerente, 'tGerBody', 'tGerTitle', 'tGerCount', 'Resumen por Gerente', 'gerente');
+  buildTable(rows, C.jefe,    'tJefBody', 'tJefTitle', 'tJefCount', 'Resumen por Jefe',    'jefe');
+}
+
+function showLoad(t){document.getElementById('loadTxt').textContent=t;document.getElementById('loading').classList.remove('hidden')}
+function hideLoad(){document.getElementById('loading').classList.add('hidden')}
 function setStatus(t,ok){
   document.getElementById('statusTxt').textContent=t;
   const dot=document.getElementById('statusDot');
@@ -590,8 +600,8 @@ function setStatus(t,ok){
   dot.style.animation=ok?'none':'pulse 2s infinite';
   if(ok) dot.style.opacity='1';
 }
-function showErr(msg){ document.getElementById('errMsg').textContent=msg; document.getElementById('errBanner').classList.remove('hidden'); }
-function hideErr(){ document.getElementById('errBanner').classList.add('hidden'); }
+function showErr(msg){document.getElementById('errMsg').textContent=msg;document.getElementById('errBanner').classList.remove('hidden')}
+function hideErr(){document.getElementById('errBanner').classList.add('hidden')}
 </script>
 </body>
 </html>
