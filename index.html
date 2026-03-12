@@ -16,14 +16,16 @@
   --red:#e53e3e;--amber:#d97706;--blue:#3b82f6;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-height:100vh}
+html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-height:100vh}
 
+/* ── HEADER ── */
 .page-header{
   background:var(--navy2);
   padding:1.1rem 2rem;
   border-bottom:3px solid var(--green);
   display:flex;align-items:center;justify-content:space-between;
   box-shadow:0 2px 16px rgba(0,0,0,.25);
+  position:sticky;top:0;z-index:100;
 }
 .header-left{display:flex;align-items:center;gap:1.1rem}
 .header-logo img{height:26px;object-fit:contain}
@@ -39,13 +41,22 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .s-dot{width:7px;height:7px;border-radius:50%;background:#aaa;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-.layout{display:flex;height:calc(100vh - 68px)}
+/* ── LAYOUT — scroll libre ── */
+.layout{
+  display:flex;
+  align-items:flex-start;   /* sidebar no se estira */
+  min-height:calc(100vh - 68px);
+}
 
+/* ── SIDEBAR — sticky, no corta la página ── */
 .sidebar{
   width:220px;flex-shrink:0;background:var(--white);
   border-right:1px solid var(--border);
-  padding:1.1rem .95rem;overflow-y:auto;
+  padding:1.1rem .95rem;
   display:flex;flex-direction:column;gap:1rem;
+  position:sticky;top:68px;          /* pegado bajo el header */
+  height:calc(100vh - 68px);
+  overflow-y:auto;
 }
 .sb-title{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-bottom:.5rem;border-bottom:1px solid var(--border)}
 .fg{display:flex;flex-direction:column;gap:.28rem}
@@ -64,8 +75,15 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 }
 .btn-reset:hover{border-color:var(--green);color:var(--green);background:rgba(126,211,33,.06)}
 
-.main{flex:1;overflow-y:auto;padding:1.35rem 1.5rem;display:flex;flex-direction:column;gap:1.1rem}
+/* ── MAIN — crece libremente, sin overflow oculto ── */
+.main{
+  flex:1;
+  padding:1.35rem 1.5rem;
+  display:flex;flex-direction:column;gap:1.1rem;
+  min-width:0;        /* evita desbordamiento en flex */
+}
 
+/* ── KPI GRID ── */
 .kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
 .kpi{
   background:var(--white);border-radius:12px;padding:1.1rem 1.25rem;
@@ -84,6 +102,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .kpi-val{font-size:2rem;font-weight:700;color:var(--kc,var(--green));line-height:1;letter-spacing:-.02em}
 .kpi-lbl{font-size:.68rem;font-weight:600;color:var(--muted);margin-top:.3rem;text-transform:uppercase;letter-spacing:.05em;line-height:1.4}
 
+/* ── CHART CARD ── */
 .chart-card{
   background:var(--white);border-radius:12px;padding:1.1rem 1.35rem;
   box-shadow:0 2px 10px rgba(26,34,54,.07);
@@ -96,7 +115,6 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .leg{display:flex;align-items:center;gap:.35rem;font-size:.72rem;font-weight:500;color:var(--muted)}
 .leg-sq{width:10px;height:10px;border-radius:2px}
 .leg-line{width:18px;height:2.5px;border-radius:1px}
-/* Gráfica 10% más chica */
 .chart-wrap{position:relative;height:252px}
 
 /* ── TABLA ── */
@@ -104,6 +122,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
   background:var(--white);border-radius:12px;
   box-shadow:0 2px 10px rgba(26,34,54,.07);
   overflow:hidden;
+  margin-bottom:1.5rem;   /* respiro al final de la página */
 }
 .table-hdr{
   display:flex;align-items:center;justify-content:space-between;
@@ -116,7 +135,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .data-table thead th{
   background:var(--navy2);color:rgba(255,255,255,.85);
   font-size:.7rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  padding:.6rem 1rem;text-align:left;white-space:nowrap;position:sticky;top:0;
+  padding:.6rem 1rem;text-align:left;white-space:nowrap;
 }
 .data-table thead th:nth-child(n+3){text-align:right}
 .data-table tbody tr{border-bottom:1px solid var(--border);transition:background .12s}
@@ -124,7 +143,6 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .data-table tbody tr:hover{background:#f7f9ff}
 .data-table tbody td{padding:.55rem 1rem;font-size:.8rem;color:var(--text)}
 .data-table tbody td:nth-child(n+3){text-align:right;font-variant-numeric:tabular-nums}
-.td-rank{width:36px;padding-right:.25rem}
 .td-cli{font-weight:600}
 .td-num{color:var(--navy)}
 .td-late{color:var(--red);font-weight:600}
@@ -139,6 +157,7 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 }
 .table-empty{text-align:center;padding:2.5rem 1rem;color:var(--muted);font-size:.82rem}
 
+/* ── LOADING ── */
 .loading{position:fixed;inset:0;z-index:500;background:rgba(16,22,38,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;backdrop-filter:blur(6px)}
 .loading.hidden{display:none}
 .spin{width:44px;height:44px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
@@ -146,16 +165,9 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 .load-txt{font-size:.82rem;color:rgba(255,255,255,.45)}
 .load-logo img{height:26px;filter:brightness(10)}
 
+/* ── ERROR ── */
 .err{background:#fff5f5;border-left:4px solid var(--red);border-radius:0 8px 8px 0;padding:.75rem 1rem;font-size:.8rem;color:#c53030;display:flex;align-items:flex-start;gap:.5rem}
 .err.hidden{display:none}
-
-/* debug panel */
-.debug-pill{
-  position:fixed;bottom:1rem;right:1rem;z-index:200;
-  background:var(--navy2);color:rgba(255,255,255,.5);
-  font-size:.65rem;font-family:monospace;padding:.3rem .6rem;border-radius:6px;
-  max-width:340px;word-break:break-all;display:none;
-}
 </style>
 </head>
 <body>
@@ -237,7 +249,6 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
       <div class="chart-wrap"><canvas id="chart"></canvas></div>
     </div>
 
-    <!-- TABLA POR CLIENTE -->
     <div class="table-card">
       <div class="table-hdr">
         <div>
@@ -264,8 +275,6 @@ body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;min-h
 
   </main>
 </div>
-
-<div class="debug-pill" id="debugPill"></div>
 
 <script>
 const SHEET_ID = '1UrOcFLeHEUQR84302e86c08Ny3fWclUA7JGAYtEkuyQ';
@@ -309,9 +318,8 @@ function parseCSV(text) {
     if (obj[C.fecha] && obj[C.fecha].trim()!=='') rows.push(obj);
   }
   console.log('Filas cargadas:', rows.length);
-  // Debug: mostrar valores únicos del campo cliente
   const uniqs = [...new Set(rows.map(r=>r[C.cliente]).filter(Boolean))];
-  console.log('Clientes únicos ('+uniqs.length+'):', uniqs.slice(0,10));
+  console.log('Clientes únicos ('+uniqs.length+'):', uniqs.slice(0,15));
   return rows;
 }
 
@@ -323,13 +331,8 @@ async function loadSheet() {
     showLoad('Procesando datos…');
     const text = await res.text();
     DATA = parseCSV(text);
-    if (!DATA.length) throw new Error('Sin filas válidas. Verifica columna "start_date" en el sheet.');
-
-    // Detectar nombre real del campo cliente si difiere
-    const firstRow = DATA[0];
-    const keys = Object.keys(firstRow);
-    console.log('Todas las columnas:', keys);
-
+    if (!DATA.length) throw new Error('Sin filas válidas. Verifica columna "start_date".');
+    console.log('Columnas disponibles:', Object.keys(DATA[0]));
     setStatus('Conectado · '+DATA.length.toLocaleString('es-MX')+' registros', true);
     hideLoad(); fillSelects(); draw();
   } catch(e) {
@@ -351,10 +354,10 @@ function norm(s) {
 const uniq = arr => [...new Set(arr.filter(v => v && v.trim()))].sort();
 
 function fillSelects() {
-  fill('fSem', uniq(DATA.map(r=>r[C.semana])));
-  fill('fCli', uniq(DATA.map(r=>r[C.cliente])));
-  fill('fGer', uniq(DATA.map(r=>r[C.gerente])));
-  fill('fJef', uniq(DATA.map(r=>r[C.jefe])));
+  fill('fSem', uniq(DATA.map(r => r[C.semana])));
+  fill('fCli', uniq(DATA.map(r => r[C.cliente])));
+  fill('fGer', uniq(DATA.map(r => r[C.gerente])));
+  fill('fJef', uniq(DATA.map(r => r[C.jefe])));
 }
 
 function fill(id, vals) {
@@ -390,7 +393,7 @@ function resetFilters() {
 function filterRows() {
   const f = getF();
   return DATA.filter(r => {
-    if (f.sem && r[C.semana] !== f.sem) return false;
+    if (f.sem && r[C.semana]  !== f.sem) return false;
     if (f.cli && r[C.cliente] !== f.cli) return false;
     if (f.ger && r[C.gerente] !== f.ger) return false;
     if (f.jef && r[C.jefe]    !== f.jef) return false;
@@ -410,8 +413,8 @@ function pctColor(p) {
 
 function draw() {
   if (!DATA.length) return;
-  const f    = getF();
   const rows = filterRows();
+  const f    = getF();
 
   // ── KPIs y gráfica por día ──
   const by = {};
@@ -425,155 +428,143 @@ function draw() {
   const dates = Object.keys(by).sort();
   const tots  = dates.map(d => by[d].t);
   const lates = dates.map(d => by[d].l);
-  const pcts  = dates.map(d => by[d].t > 0 ? +((by[d].t - by[d].l) / by[d].t * 100).toFixed(1) : 0);
+  const pcts  = dates.map(d => by[d].t > 0 ? +((by[d].t-by[d].l)/by[d].t*100).toFixed(1) : 0);
 
-  const totT = rows.reduce((s, r) => s + (parseInt(r[C.viajes])  || 1), 0);
-  const totL = rows.reduce((s, r) => s + (parseInt(r[C.retardo]) || 0), 0);
+  const totT = rows.reduce((s,r) => s+(parseInt(r[C.viajes])||1),  0);
+  const totL = rows.reduce((s,r) => s+(parseInt(r[C.retardo])||0), 0);
   const N    = n => n.toLocaleString('es-MX');
 
   document.getElementById('kTotal').textContent = N(totT);
   document.getElementById('kTarde').textContent = N(totL);
-  document.getElementById('kPct').textContent   = totT > 0 ? ((totT - totL) / totT * 100).toFixed(1) + '%' : '–';
+  document.getElementById('kPct').textContent   = totT>0 ? ((totT-totL)/totT*100).toFixed(1)+'%' : '–';
 
   const labels = dates.map(d => {
-    const dt = new Date(d + 'T12:00:00');
-    return dt.toLocaleDateString('es-MX', { day: '2-digit', month: 'short' });
+    const dt = new Date(d+'T12:00:00');
+    return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
   });
 
   if (myChart) myChart.destroy();
   const ctx = document.getElementById('chart').getContext('2d');
   myChart = new Chart(ctx, {
-    type: 'bar',
-    data: { labels, datasets: [
+    type:'bar',
+    data:{ labels, datasets:[
       {
-        label: 'En tiempo',
-        data: tots.map((t, i) => t - lates[i]),
-        backgroundColor: '#7ed321',
-        stack: 's', order: 2,
-        borderRadius: { topLeft:0, topRight:0, bottomLeft:4, bottomRight:4 },
-        barPercentage: .6,
+        label:'En tiempo',
+        data: tots.map((t,i)=>t-lates[i]),
+        backgroundColor:'#7ed321', stack:'s', order:2,
+        borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4},
+        barPercentage:.6,
       },
       {
-        label: 'Inicios tarde',
+        label:'Inicios tarde',
         data: lates,
-        backgroundColor: '#b0bac9',
-        stack: 's', order: 2,
-        borderRadius: { topLeft:4, topRight:4, bottomLeft:0, bottomRight:0 },
-        barPercentage: .6,
+        backgroundColor:'#b0bac9', stack:'s', order:2,
+        borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0},
+        barPercentage:.6,
       },
       {
-        label: '% Cumplimiento',
-        data: pcts, type: 'line', yAxisID: 'yP', order: 1,
-        borderColor: '#5cb800', backgroundColor: 'rgba(92,184,0,.07)',
-        borderWidth: 2.5,
-        pointBackgroundColor: '#5cb800', pointBorderColor: '#fff',
-        pointBorderWidth: 2, pointRadius: 5, pointHoverRadius: 7,
-        tension: .3, fill: true,
+        label:'% Cumplimiento',
+        data:pcts, type:'line', yAxisID:'yP', order:1,
+        borderColor:'#5cb800', backgroundColor:'rgba(92,184,0,.07)',
+        borderWidth:2.5,
+        pointBackgroundColor:'#5cb800', pointBorderColor:'#fff',
+        pointBorderWidth:2, pointRadius:5, pointHoverRadius:7,
+        tension:.3, fill:true,
       },
     ]},
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      interaction: { mode: 'index', intersect: false },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1a2236', borderColor: '#7ed321', borderWidth: 1,
-          titleColor: '#fff', bodyColor: 'rgba(255,255,255,.65)', padding: 12,
-          callbacks: { label(c) {
-            return c.dataset.label === '% Cumplimiento'
-              ? '  % Cumpl.: ' + c.raw + '%'
-              : '  ' + c.dataset.label + ': ' + c.raw.toLocaleString('es-MX');
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'#1a2236', borderColor:'#7ed321', borderWidth:1,
+          titleColor:'#fff', bodyColor:'rgba(255,255,255,.65)', padding:12,
+          callbacks:{label(c){
+            return c.dataset.label==='% Cumplimiento'
+              ? '  % Cumpl.: '+c.raw+'%'
+              : '  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX');
           }}
         }
       },
-      scales: {
-        x: { stacked: true, ticks: { color: '#6b7a99', font: { size: 10, family: 'Inter' } }, grid: { color: 'rgba(0,0,0,.05)' } },
-        y: { stacked: true, ticks: { color: '#6b7a99', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,.05)' } },
-        yP: { position: 'right', ticks: { color: '#5cb800', font: { size: 10 }, callback: v => v + '%' }, grid: { display: false } },
+      scales:{
+        x:{ stacked:true, ticks:{color:'#6b7a99',font:{size:10,family:'Inter'}}, grid:{color:'rgba(0,0,0,.05)'} },
+        y:{ stacked:true, ticks:{color:'#6b7a99',font:{size:10}}, grid:{color:'rgba(0,0,0,.05)'} },
+        yP:{ position:'right', ticks:{color:'#5cb800',font:{size:10},callback:v=>v+'%'}, grid:{display:false} },
       }
     },
-    plugins: [{
-      id: 'lbl',
-      afterDatasetsDraw(chart) {
-        const ctx = chart.ctx;
-        const li = chart.data.datasets.findIndex(d => d.label === '% Cumplimiento');
-        chart.getDatasetMeta(li).data.forEach((pt, i) => {
-          const v = chart.data.datasets[li].data[i];
-          if (v == null) return;
-          ctx.save(); ctx.fillStyle = '#5a7a00'; ctx.font = 'bold 10px Inter';
-          ctx.textAlign = 'center'; ctx.fillText(v + '%', pt.x, pt.y - 10); ctx.restore();
+    plugins:[{
+      id:'lbl',
+      afterDatasetsDraw(chart){
+        const ctx=chart.ctx;
+        const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
+        chart.getDatasetMeta(li).data.forEach((pt,i)=>{
+          const v=chart.data.datasets[li].data[i];
+          if(v==null) return;
+          ctx.save();ctx.fillStyle='#5a7a00';ctx.font='bold 10px Inter';
+          ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-10);ctx.restore();
         });
-        const bi = chart.data.datasets.findIndex(d => d.label === 'Inicios tarde');
-        chart.getDatasetMeta(bi).data.forEach((bar, i) => {
-          const v = chart.data.datasets[bi].data[i];
-          if (!v || bar.height < 14) return;
-          ctx.save(); ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(v.toLocaleString('es-MX'), bar.x, bar.y + bar.height / 2); ctx.restore();
+        const bi=chart.data.datasets.findIndex(d=>d.label==='Inicios tarde');
+        chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
+          const v=chart.data.datasets[bi].data[i];
+          if(!v||bar.height<14) return;
+          ctx.save();ctx.fillStyle='#fff';ctx.font='bold 10px Inter';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
         });
-        const vi = chart.data.datasets.findIndex(d => d.label === 'En tiempo');
-        chart.getDatasetMeta(vi).data.forEach((bar, i) => {
-          const v = chart.data.datasets[vi].data[i];
-          if (!v || bar.height < 14) return;
-          ctx.save(); ctx.fillStyle = 'rgba(0,0,0,.5)'; ctx.font = 'bold 10px Inter';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-          ctx.fillText(v.toLocaleString('es-MX'), bar.x, bar.y + bar.height / 2); ctx.restore();
+        const vi=chart.data.datasets.findIndex(d=>d.label==='En tiempo');
+        chart.getDatasetMeta(vi).data.forEach((bar,i)=>{
+          const v=chart.data.datasets[vi].data[i];
+          if(!v||bar.height<14) return;
+          ctx.save();ctx.fillStyle='rgba(0,0,0,.5)';ctx.font='bold 10px Inter';
+          ctx.textAlign='center';ctx.textBaseline='middle';
+          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
         });
       }
     }]
   });
 
-  const parts = [];
-  if (f.sem) parts.push('Sem ' + f.sem);
-  if (f.cli) parts.push(f.cli);
-  if (f.ger) parts.push('Ger: ' + f.ger);
-  if (f.jef) parts.push('Jefe: ' + f.jef);
-  const suffix = parts.length ? ' – ' + parts.join(' · ') : '';
-  document.getElementById('chartTitle').textContent = 'Inicios Tarde por Día' + suffix;
+  const parts=[];
+  if(f.sem) parts.push('Sem '+f.sem);
+  if(f.cli) parts.push(f.cli);
+  if(f.ger) parts.push('Ger: '+f.ger);
+  if(f.jef) parts.push('Jefe: '+f.jef);
+  const suffix = parts.length ? ' – '+parts.join(' · ') : '';
+  document.getElementById('chartTitle').textContent = 'Inicios Tarde por Día'+suffix;
 
-  // ── Tabla por cliente ──
-  // Agrupa siempre por el campo cliente, sin importar qué filtros estén activos
+  // ── Tabla por cliente — agrupa las filas ya filtradas ──
   const byCli = {};
   rows.forEach(r => {
-    const cli = (r[C.cliente] || '').trim() || '(Sin cliente)';
-    if (!byCli[cli]) byCli[cli] = { t: 0, l: 0 };
+    const cli = (r[C.cliente]||'').trim() || '(Sin cliente)';
+    if (!byCli[cli]) byCli[cli] = { t:0, l:0 };
     byCli[cli].t += parseInt(r[C.viajes])  || 1;
     byCli[cli].l += parseInt(r[C.retardo]) || 0;
   });
 
   const cliRows = Object.entries(byCli)
-    .map(([cli, d]) => ({
-      cli,
-      t:   d.t,
-      l:   d.l,
-      pct: d.t > 0 ? (d.t - d.l) / d.t * 100 : 0,
-    }))
-    .sort((a, b) => b.pct - a.pct);   // mayor cumplimiento primero
+    .map(([cli,d]) => ({ cli, t:d.t, l:d.l, pct: d.t>0 ? (d.t-d.l)/d.t*100 : 0 }))
+    .sort((a,b) => b.pct - a.pct);
 
   const tbody  = document.getElementById('tableBody');
-  const tTitle = document.getElementById('tableTitle');
-  const tCount = document.getElementById('tableCount');
-
-  tTitle.textContent = 'Resumen por Cliente' + suffix;
-  tCount.textContent = cliRows.length + (cliRows.length === 1 ? ' cliente' : ' clientes');
+  document.getElementById('tableTitle').textContent  = 'Resumen por Cliente'+suffix;
+  document.getElementById('tableCount').textContent  = cliRows.length+(cliRows.length===1?' cliente':' clientes');
 
   if (!cliRows.length) {
     tbody.innerHTML = '<tr><td colspan="5" class="table-empty">Sin datos para los filtros seleccionados</td></tr>';
     return;
   }
 
-  const badgeColors = ['#f59e0b', '#9ca3af', '#b45309'];
+  const badgeColors = ['#f59e0b','#9ca3af','#b45309'];
 
-  tbody.innerHTML = cliRows.map((row, i) => {
-    const pctFmt = row.pct.toFixed(1) + '%';
-    const color  = pctColor(row.pct);
-    const barW   = Math.min(100, row.pct).toFixed(1);
-    const badgeBg = i < 3 ? badgeColors[i] : '#e5e7eb';
-    const badgeFg = i < 3 ? '#fff' : '#6b7a99';
-
+  tbody.innerHTML = cliRows.map((row,i) => {
+    const pctFmt  = row.pct.toFixed(1)+'%';
+    const color   = pctColor(row.pct);
+    const barW    = Math.min(100, row.pct).toFixed(1);
+    const badgeBg = i<3 ? badgeColors[i] : '#e5e7eb';
+    const badgeFg = i<3 ? '#fff' : '#6b7a99';
     return `<tr>
-      <td class="td-rank">
-        <span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i + 1}</span>
+      <td style="width:44px">
+        <span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span>
       </td>
       <td class="td-cli" title="${row.cli}">${row.cli}</td>
       <td class="td-num">${N(row.t)}</td>
@@ -590,17 +581,17 @@ function draw() {
   }).join('');
 }
 
-function showLoad(t) { document.getElementById('loadTxt').textContent = t; document.getElementById('loading').classList.remove('hidden'); }
-function hideLoad()  { document.getElementById('loading').classList.add('hidden'); }
-function setStatus(t, ok) {
-  document.getElementById('statusTxt').textContent = t;
-  const dot = document.getElementById('statusDot');
-  dot.style.background = ok ? '#7ed321' : '#e53e3e';
-  dot.style.animation  = ok ? 'none' : 'pulse 2s infinite';
-  if (ok) dot.style.opacity = '1';
+function showLoad(t){ document.getElementById('loadTxt').textContent=t; document.getElementById('loading').classList.remove('hidden'); }
+function hideLoad(){ document.getElementById('loading').classList.add('hidden'); }
+function setStatus(t,ok){
+  document.getElementById('statusTxt').textContent=t;
+  const dot=document.getElementById('statusDot');
+  dot.style.background=ok?'#7ed321':'#e53e3e';
+  dot.style.animation=ok?'none':'pulse 2s infinite';
+  if(ok) dot.style.opacity='1';
 }
-function showErr(msg) { document.getElementById('errMsg').textContent = msg; document.getElementById('errBanner').classList.remove('hidden'); }
-function hideErr()    { document.getElementById('errBanner').classList.add('hidden'); }
+function showErr(msg){ document.getElementById('errMsg').textContent=msg; document.getElementById('errBanner').classList.remove('hidden'); }
+function hideErr(){ document.getElementById('errBanner').classList.add('hidden'); }
 </script>
 </body>
 </html>
