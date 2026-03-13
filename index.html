@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Inicios Tarde · Traxión</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -144,6 +145,56 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
 .table-empty{text-align:center;padding:2rem 1rem;color:var(--muted);font-size:.82rem}
 .section-end{margin-bottom:1.5rem}
 
+/* ── Excel-like column filters ── */
+.data-table thead th{position:relative;cursor:default;user-select:none}
+.th-inner{display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.th-inner span{flex:1}
+.filter-btn{
+  background:none;border:none;cursor:pointer;padding:0 2px;
+  color:rgba(255,255,255,.45);font-size:.72rem;line-height:1;flex-shrink:0;
+  transition:color .15s;
+}
+.filter-btn:hover,.filter-btn.active{color:var(--green)}
+.filter-btn.active{color:#fbbf24 !important}
+.filter-dropdown{
+  position:absolute;top:100%;left:0;min-width:210px;z-index:500;
+  background:var(--white);border:1px solid var(--border);border-radius:8px;
+  box-shadow:0 8px 24px rgba(0,0,0,.18);padding:.55rem;
+  display:none;flex-direction:column;gap:.3rem;
+}
+.filter-dropdown.open{display:flex}
+.filter-search{
+  width:100%;border:1px solid var(--border);border-radius:5px;
+  padding:.35rem .5rem;font-size:.75rem;font-family:'Inter',sans-serif;outline:none;color:var(--text);
+}
+.filter-search:focus{border-color:var(--green)}
+.filter-options{max-height:190px;overflow-y:auto;display:flex;flex-direction:column;gap:.05rem}
+.filter-option{
+  display:flex;align-items:center;gap:.45rem;padding:.3rem .4rem;border-radius:4px;
+  font-size:.76rem;cursor:pointer;transition:background .1s;color:var(--text);
+}
+.filter-option:hover{background:var(--bg)}
+.filter-option input[type=checkbox]{accent-color:var(--green);cursor:pointer;width:13px;height:13px}
+.filter-actions{display:flex;gap:.4rem;padding-top:.35rem;border-top:1px solid var(--border);margin-top:.15rem}
+.fa-btn{
+  flex:1;padding:.32rem .4rem;border-radius:5px;font-size:.71rem;font-family:'Inter',sans-serif;
+  font-weight:600;cursor:pointer;border:1px solid var(--border);transition:all .15s;
+}
+.fa-btn.apply{background:var(--green);color:#fff;border-color:var(--green)}
+.fa-btn.apply:hover{background:var(--green2)}
+.fa-btn.clear{background:transparent;color:var(--muted)}
+.fa-btn.clear:hover{border-color:var(--green);color:var(--green)}
+
+/* ── Capture button ── */
+.btn-capture{
+  display:flex;align-items:center;gap:.3rem;
+  background:transparent;border:1px solid var(--border);border-radius:6px;
+  color:var(--muted);padding:.28rem .65rem;font-size:.7rem;font-family:'Inter',sans-serif;
+  font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap;
+}
+.btn-capture:hover{border-color:var(--green);color:var(--green);background:rgba(126,211,33,.06)}
+.table-hdr-actions{display:flex;align-items:center;gap:.5rem;flex-shrink:0}
+
 .loading{position:fixed;inset:0;z-index:500;background:rgba(16,22,38,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;backdrop-filter:blur(6px)}
 .loading.hidden{display:none}
 .spin{width:44px;height:44px;border:3px solid rgba(255,255,255,.1);border-top-color:var(--green);border-radius:50%;animation:spin .7s linear infinite}
@@ -234,22 +285,25 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
     </div>
 
     <!-- Tabla cliente: ancho completo -->
-    <div class="table-card">
+    <div class="table-card" id="card-cli">
       <div class="table-hdr">
         <div class="table-hdr-left">
           <div class="table-hdr-title"><span class="table-hdr-icon">🏢</span><span id="tCliTitle">Resumen por Cliente</span></div>
-          <div class="table-hdr-sub">Ordenado por % cumplimiento · respeta los filtros activos</div>
+          <div class="table-hdr-sub">Filtros por columna activos · respeta los filtros del panel</div>
         </div>
-        <span class="table-count" id="tCliCount">0 clientes</span>
+        <div class="table-hdr-actions">
+          <span class="table-count" id="tCliCount">0 clientes</span>
+          <button class="btn-capture" onclick="captureTable('card-cli','Clientes')">📷 Capturar</button>
+        </div>
       </div>
       <div style="overflow-x:auto">
-        <table class="data-table">
+        <table class="data-table" id="tbl-cli">
           <thead><tr>
             <th style="width:44px">#</th>
-            <th>Cliente / Grupo</th>
-            <th>Total Viajes</th>
-            <th>Inicios Tarde</th>
-            <th>% Cumplimiento</th>
+            <th data-tbl="cli" data-col="0"><div class="th-inner"><span>Cliente / Grupo</span><button class="filter-btn" onclick="openFilter(event,'cli',0)">▼</button></div><div class="filter-dropdown" id="fd-cli-0"></div></th>
+            <th data-tbl="cli" data-col="1"><div class="th-inner"><span>Total Viajes</span><button class="filter-btn" onclick="openFilter(event,'cli',1)">▼</button></div><div class="filter-dropdown" id="fd-cli-1"></div></th>
+            <th data-tbl="cli" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><button class="filter-btn" onclick="openFilter(event,'cli',2)">▼</button></div><div class="filter-dropdown" id="fd-cli-2"></div></th>
+            <th data-tbl="cli" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><button class="filter-btn" onclick="openFilter(event,'cli',3)">▼</button></div><div class="filter-dropdown" id="fd-cli-3"></div></th>
           </tr></thead>
           <tbody id="tCliBody"></tbody>
         </table>
@@ -259,44 +313,50 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
     <!-- Gerente y Jefe: side by side -->
     <div class="tables-grid section-end">
 
-      <div class="table-card">
+      <div class="table-card" id="card-ger">
         <div class="table-hdr">
           <div class="table-hdr-left">
             <div class="table-hdr-title"><span class="table-hdr-icon">👔</span><span id="tGerTitle">Resumen por Gerente</span></div>
-            <div class="table-hdr-sub">Ordenado por % cumplimiento</div>
+            <div class="table-hdr-sub">Filtros por columna activos</div>
           </div>
-          <span class="table-count" id="tGerCount">0 gerentes</span>
+          <div class="table-hdr-actions">
+            <span class="table-count" id="tGerCount">0 gerentes</span>
+            <button class="btn-capture" onclick="captureTable('card-ger','Gerentes')">📷 Capturar</button>
+          </div>
         </div>
         <div style="overflow-x:auto">
-          <table class="data-table">
+          <table class="data-table" id="tbl-ger">
             <thead><tr>
               <th style="width:44px">#</th>
-              <th>Gerente</th>
-              <th>Total Viajes</th>
-              <th>Inicios Tarde</th>
-              <th>% Cumplimiento</th>
+              <th data-tbl="ger" data-col="0"><div class="th-inner"><span>Gerente</span><button class="filter-btn" onclick="openFilter(event,'ger',0)">▼</button></div><div class="filter-dropdown" id="fd-ger-0"></div></th>
+              <th data-tbl="ger" data-col="1"><div class="th-inner"><span>Total Viajes</span><button class="filter-btn" onclick="openFilter(event,'ger',1)">▼</button></div><div class="filter-dropdown" id="fd-ger-1"></div></th>
+              <th data-tbl="ger" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><button class="filter-btn" onclick="openFilter(event,'ger',2)">▼</button></div><div class="filter-dropdown" id="fd-ger-2"></div></th>
+              <th data-tbl="ger" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><button class="filter-btn" onclick="openFilter(event,'ger',3)">▼</button></div><div class="filter-dropdown" id="fd-ger-3"></div></th>
             </tr></thead>
             <tbody id="tGerBody"></tbody>
           </table>
         </div>
       </div>
 
-      <div class="table-card">
+      <div class="table-card" id="card-jef">
         <div class="table-hdr">
           <div class="table-hdr-left">
             <div class="table-hdr-title"><span class="table-hdr-icon">🗂️</span><span id="tJefTitle">Resumen por Jefe</span></div>
-            <div class="table-hdr-sub">Ordenado por % cumplimiento</div>
+            <div class="table-hdr-sub">Filtros por columna activos</div>
           </div>
-          <span class="table-count" id="tJefCount">0 jefes</span>
+          <div class="table-hdr-actions">
+            <span class="table-count" id="tJefCount">0 jefes</span>
+            <button class="btn-capture" onclick="captureTable('card-jef','Jefes')">📷 Capturar</button>
+          </div>
         </div>
         <div style="overflow-x:auto">
-          <table class="data-table">
+          <table class="data-table" id="tbl-jef">
             <thead><tr>
               <th style="width:44px">#</th>
-              <th>Jefe</th>
-              <th>Total Viajes</th>
-              <th>Inicios Tarde</th>
-              <th>% Cumplimiento</th>
+              <th data-tbl="jef" data-col="0"><div class="th-inner"><span>Jefe</span><button class="filter-btn" onclick="openFilter(event,'jef',0)">▼</button></div><div class="filter-dropdown" id="fd-jef-0"></div></th>
+              <th data-tbl="jef" data-col="1"><div class="th-inner"><span>Total Viajes</span><button class="filter-btn" onclick="openFilter(event,'jef',1)">▼</button></div><div class="filter-dropdown" id="fd-jef-1"></div></th>
+              <th data-tbl="jef" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><button class="filter-btn" onclick="openFilter(event,'jef',2)">▼</button></div><div class="filter-dropdown" id="fd-jef-2"></div></th>
+              <th data-tbl="jef" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><button class="filter-btn" onclick="openFilter(event,'jef',3)">▼</button></div><div class="filter-dropdown" id="fd-jef-3"></div></th>
             </tr></thead>
             <tbody id="tJefBody"></tbody>
           </table>
@@ -442,41 +502,18 @@ function buildTable(rows, field, bodyId, titleId, countId, titleBase, countWord)
     .map(([k,d])=>({k, t:d.t, l:d.l, pct:d.t>0?(d.t-d.l)/d.t*100:0}))
     .sort((a,b)=>b.pct-a.pct);
 
-  document.getElementById(countId).textContent =
-    sorted.length+(sorted.length===1?' '+countWord:' '+countWord+'s');
+  // Store full snapshot and reset column filters for this table
+  const tblKey = countId.replace('tCli','cli').replace('tGer','ger').replace('tJef','jef')
+    .replace('Count','').replace('cli','cli').replace('ger','ger').replace('jef','jef');
+  // Derive key: tCliCount->cli, tGerCount->ger, tJefCount->jef
+  const key = countId==='tCliCount'?'cli':countId==='tGerCount'?'ger':'jef';
+  tableData[key] = sorted;
+  // Reset col filters when data refreshes
+  tableFilters[key] = {};
+  // Reset active highlights
+  document.querySelectorAll(`[data-tbl="${key}"] .filter-btn`).forEach(b=>b.classList.remove('active'));
 
-  const N=n=>n.toLocaleString('es-MX');
-  const badgeColors=['#f59e0b','#9ca3af','#b45309'];
-
-  if(!sorted.length){
-    document.getElementById(bodyId).innerHTML=
-      '<tr><td colspan="5" class="table-empty">Sin datos para los filtros seleccionados</td></tr>';
-    return;
-  }
-
-  document.getElementById(bodyId).innerHTML=sorted.map((row,i)=>{
-    const pctFmt=row.pct.toFixed(1)+'%';
-    const color=pctColor(row.pct);
-    const barW=Math.min(100,row.pct).toFixed(1);
-    const badgeBg=i<3?badgeColors[i]:'#e5e7eb';
-    const badgeFg=i<3?'#fff':'#6b7a99';
-    return `<tr>
-      <td style="width:44px">
-        <span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span>
-      </td>
-      <td class="td-cli" title="${row.k}">${row.k}</td>
-      <td class="td-num">${N(row.t)}</td>
-      <td class="td-late">${N(row.l)}</td>
-      <td>
-        <div class="pct-cell">
-          <div class="pct-bar-wrap">
-            <div class="pct-bar" style="width:${barW}%;background:${color}"></div>
-          </div>
-          <span class="pct-val" style="color:${color}">${pctFmt}</span>
-        </div>
-      </td>
-    </tr>`;
-  }).join('');
+  renderFilteredTable(key);
 }
 
 function draw(){
@@ -602,6 +639,158 @@ function setStatus(t,ok){
 }
 function showErr(msg){document.getElementById('errMsg').textContent=msg;document.getElementById('errBanner').classList.remove('hidden')}
 function hideErr(){document.getElementById('errBanner').classList.add('hidden')}
+
+// ─── EXCEL-LIKE TABLE FILTERS ───────────────────────────────
+// tableFilters[tbl][col] = Set of selected values (null = all)
+const tableFilters = { cli:{}, ger:{}, jef:{} };
+// Snapshot of full sorted data per table (set by buildTable)
+const tableData = { cli:[], ger:[], jef:[] };
+const tableBodyIds = { cli:'tCliBody', ger:'tGerBody', jef:'tJefBody' };
+const tableCountIds= { cli:'tCliCount',ger:'tGerCount',jef:'tJefCount' };
+const tableCountWords={ cli:'cliente', ger:'gerente', jef:'jefe' };
+
+function openFilter(e, tbl, col){
+  e.stopPropagation();
+  // Close all other dropdowns
+  document.querySelectorAll('.filter-dropdown.open').forEach(d=>{
+    if(d.id!==`fd-${tbl}-${col}`) d.classList.remove('open');
+  });
+  const dd = document.getElementById(`fd-${tbl}-${col}`);
+  if(dd.classList.contains('open')){ dd.classList.remove('open'); return; }
+
+  // Build unique values from full data
+  const rows = tableData[tbl];
+  const vals = [...new Set(rows.map(r=>colVal(r,col)))].sort((a,b)=>{
+    const na=parseFloat(a), nb=parseFloat(b);
+    return isNaN(na)||isNaN(nb)?String(a).localeCompare(String(b)):na-nb;
+  });
+
+  const active = tableFilters[tbl][col]; // Set or undefined
+  dd.innerHTML = `
+    <input class="filter-search" placeholder="Buscar…" oninput="filterSearch(this,'${tbl}',${col})">
+    <div class="filter-options" id="fo-${tbl}-${col}">
+      <label class="filter-option" id="fo-all-${tbl}-${col}">
+        <input type="checkbox" id="chk-all-${tbl}-${col}" ${!active?'checked':''} onchange="toggleAll(this,'${tbl}',${col})"> Seleccionar todo
+      </label>
+      ${vals.map(v=>`
+        <label class="filter-option">
+          <input type="checkbox" value="${v}" ${(!active||active.has(String(v)))?'checked':''} onchange="updateFilter('${tbl}',${col})">
+          ${v}
+        </label>`).join('')}
+    </div>
+    <div class="filter-actions">
+      <button class="fa-btn clear" onclick="clearColFilter('${tbl}',${col})">Limpiar</button>
+      <button class="fa-btn apply" onclick="applyColFilter('${tbl}',${col})">Aplicar</button>
+    </div>`;
+  dd.classList.add('open');
+}
+
+function colVal(row, col){
+  if(col===0) return row.k;
+  if(col===1) return row.t;
+  if(col===2) return row.l;
+  if(col===3) return row.pct.toFixed(1)+'%';
+  return '';
+}
+
+function filterSearch(inp, tbl, col){
+  const q = inp.value.toLowerCase();
+  document.querySelectorAll(`#fo-${tbl}-${col} .filter-option`).forEach(opt=>{
+    if(opt.id===`fo-all-${tbl}-${col}`) return;
+    opt.style.display = opt.textContent.toLowerCase().includes(q)?'':'none';
+  });
+}
+
+function toggleAll(chk, tbl, col){
+  document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`).forEach(c=>c.checked=chk.checked);
+}
+
+function updateFilter(tbl, col){
+  const boxes = [...document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`)];
+  const allChk = document.getElementById(`chk-all-${tbl}-${col}`);
+  allChk.checked = boxes.every(b=>b.checked);
+}
+
+function applyColFilter(tbl, col){
+  const boxes = [...document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`)];
+  const checked = boxes.filter(b=>b.checked).map(b=>b.value);
+  const all = boxes.length===checked.length;
+  tableFilters[tbl][col] = all ? null : new Set(checked);
+  // Update button highlight
+  const btn = document.querySelector(`[data-tbl="${tbl}"][data-col="${col}"] .filter-btn`);
+  if(btn) btn.classList.toggle('active', !all);
+  document.getElementById(`fd-${tbl}-${col}`).classList.remove('open');
+  renderFilteredTable(tbl);
+}
+
+function clearColFilter(tbl, col){
+  tableFilters[tbl][col] = null;
+  const btn = document.querySelector(`[data-tbl="${tbl}"][data-col="${col}"] .filter-btn`);
+  if(btn) btn.classList.remove('active');
+  document.getElementById(`fd-${tbl}-${col}`).classList.remove('open');
+  renderFilteredTable(tbl);
+}
+
+function renderFilteredTable(tbl){
+  let rows = tableData[tbl];
+  // Apply each active column filter
+  for(const [col, sel] of Object.entries(tableFilters[tbl])){
+    if(!sel) continue;
+    rows = rows.filter(r=>sel.has(String(colVal(r,Number(col)))));
+  }
+  const bodyId  = tableBodyIds[tbl];
+  const countId = tableCountIds[tbl];
+  const word    = tableCountWords[tbl];
+  const N=n=>n.toLocaleString('es-MX');
+  const badgeColors=['#f59e0b','#9ca3af','#b45309'];
+  document.getElementById(countId).textContent =
+    rows.length+(rows.length===1?' '+word:' '+word+'s');
+  if(!rows.length){
+    document.getElementById(bodyId).innerHTML=
+      '<tr><td colspan="5" class="table-empty">Sin resultados para el filtro</td></tr>';
+    return;
+  }
+  document.getElementById(bodyId).innerHTML=rows.map((row,i)=>{
+    const pctFmt=row.pct.toFixed(1)+'%';
+    const color=pctColor(row.pct);
+    const barW=Math.min(100,row.pct).toFixed(1);
+    const badgeBg=i<3?badgeColors[i]:'#e5e7eb';
+    const badgeFg=i<3?'#fff':'#6b7a99';
+    return `<tr>
+      <td style="width:44px"><span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span></td>
+      <td class="td-cli" title="${row.k}">${row.k}</td>
+      <td class="td-num">${N(row.t)}</td>
+      <td class="td-late">${N(row.l)}</td>
+      <td><div class="pct-cell"><div class="pct-bar-wrap"><div class="pct-bar" style="width:${barW}%;background:${color}"></div></div><span class="pct-val" style="color:${color}">${pctFmt}</span></div></td>
+    </tr>`;
+  }).join('');
+}
+
+// Close dropdowns on outside click
+document.addEventListener('click', ()=>{
+  document.querySelectorAll('.filter-dropdown.open').forEach(d=>d.classList.remove('open'));
+});
+
+// ─── CAPTURE TABLE ───────────────────────────────────────────
+async function captureTable(cardId, label){
+  const card = document.getElementById(cardId);
+  if(!card) return;
+  try {
+    const canvas = await html2canvas(card, {
+      scale: 2,
+      backgroundColor: '#ffffff',
+      useCORS: true,
+      logging: false,
+    });
+    const link = document.createElement('a');
+    const ts = new Date().toISOString().slice(0,10);
+    link.download = `Traxion_${label}_${ts}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  } catch(err){
+    alert('Error al capturar: '+err.message);
+  }
+}
 </script>
 </body>
 </html>
