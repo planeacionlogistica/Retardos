@@ -147,15 +147,17 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
 
 /* ── Excel-like column filters ── */
 .data-table thead th{position:relative;cursor:default;user-select:none}
-.th-inner{display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.th-inner{display:flex;align-items:center;justify-content:space-between;gap:.3rem}
 .th-inner span{flex:1}
-.filter-btn{
-  background:none;border:none;cursor:pointer;padding:0 2px;
-  color:rgba(255,255,255,.45);font-size:.72rem;line-height:1;flex-shrink:0;
+.th-btns{display:flex;align-items:center;gap:1px;flex-shrink:0}
+.sort-btn,.filter-btn{
+  background:none;border:none;cursor:pointer;padding:0 3px;
+  color:rgba(255,255,255,.4);font-size:.7rem;line-height:1;
   transition:color .15s;
 }
-.filter-btn:hover,.filter-btn.active{color:var(--green)}
-.filter-btn.active{color:#fbbf24 !important}
+.sort-btn:hover,.filter-btn:hover{color:rgba(255,255,255,.9)}
+.sort-btn.active-sort{color:#7ed321}
+.filter-btn.active{color:#fbbf24}
 .filter-dropdown{
   position:absolute;top:100%;left:0;min-width:210px;z-index:500;
   background:var(--white);border:1px solid var(--border);border-radius:8px;
@@ -233,6 +235,8 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
     <div class="sb-title">Filtros</div>
     <div class="fg"><label>Semana</label>
       <select id="fSem" onchange="draw()"><option value="">Todas</option></select></div>
+    <div class="fg"><label>Mes</label>
+      <select id="fMes" onchange="draw()"><option value="">Todos</option></select></div>
     <div class="fg"><label>Cliente / Grupo</label>
       <select id="fCli" onchange="draw()"><option value="">Todos</option></select></div>
     <div class="fg"><label>Gerente</label>
@@ -300,10 +304,10 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
         <table class="data-table" id="tbl-cli">
           <thead><tr>
             <th style="width:44px">#</th>
-            <th data-tbl="cli" data-col="0"><div class="th-inner"><span>Cliente / Grupo</span><button class="filter-btn" onclick="openFilter(event,'cli',0)">▼</button></div><div class="filter-dropdown" id="fd-cli-0"></div></th>
-            <th data-tbl="cli" data-col="1"><div class="th-inner"><span>Total Viajes</span><button class="filter-btn" onclick="openFilter(event,'cli',1)">▼</button></div><div class="filter-dropdown" id="fd-cli-1"></div></th>
-            <th data-tbl="cli" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><button class="filter-btn" onclick="openFilter(event,'cli',2)">▼</button></div><div class="filter-dropdown" id="fd-cli-2"></div></th>
-            <th data-tbl="cli" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><button class="filter-btn" onclick="openFilter(event,'cli',3)">▼</button></div><div class="filter-dropdown" id="fd-cli-3"></div></th>
+            <th data-tbl="cli" data-col="0"><div class="th-inner"><span>Cliente / Grupo</span><div class="th-btns"><button class="sort-btn" data-col="0" onclick="sortTable('cli',0)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',0)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-0"></div></th>
+            <th data-tbl="cli" data-col="1"><div class="th-inner"><span>Total Viajes</span><div class="th-btns"><button class="sort-btn" data-col="1" onclick="sortTable('cli',1)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',1)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-1"></div></th>
+            <th data-tbl="cli" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><div class="th-btns"><button class="sort-btn" data-col="2" onclick="sortTable('cli',2)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',2)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-2"></div></th>
+            <th data-tbl="cli" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><div class="th-btns"><button class="sort-btn" data-col="3" onclick="sortTable('cli',3)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',3)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-3"></div></th>
           </tr></thead>
           <tbody id="tCliBody"></tbody>
         </table>
@@ -328,10 +332,10 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
           <table class="data-table" id="tbl-ger">
             <thead><tr>
               <th style="width:44px">#</th>
-              <th data-tbl="ger" data-col="0"><div class="th-inner"><span>Gerente</span><button class="filter-btn" onclick="openFilter(event,'ger',0)">▼</button></div><div class="filter-dropdown" id="fd-ger-0"></div></th>
-              <th data-tbl="ger" data-col="1"><div class="th-inner"><span>Total Viajes</span><button class="filter-btn" onclick="openFilter(event,'ger',1)">▼</button></div><div class="filter-dropdown" id="fd-ger-1"></div></th>
-              <th data-tbl="ger" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><button class="filter-btn" onclick="openFilter(event,'ger',2)">▼</button></div><div class="filter-dropdown" id="fd-ger-2"></div></th>
-              <th data-tbl="ger" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><button class="filter-btn" onclick="openFilter(event,'ger',3)">▼</button></div><div class="filter-dropdown" id="fd-ger-3"></div></th>
+              <th data-tbl="ger" data-col="0"><div class="th-inner"><span>Gerente</span><div class="th-btns"><button class="sort-btn" data-col="0" onclick="sortTable('ger',0)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',0)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-0"></div></th>
+              <th data-tbl="ger" data-col="1"><div class="th-inner"><span>Total Viajes</span><div class="th-btns"><button class="sort-btn" data-col="1" onclick="sortTable('ger',1)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',1)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-1"></div></th>
+              <th data-tbl="ger" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><div class="th-btns"><button class="sort-btn" data-col="2" onclick="sortTable('ger',2)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',2)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-2"></div></th>
+              <th data-tbl="ger" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><div class="th-btns"><button class="sort-btn" data-col="3" onclick="sortTable('ger',3)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',3)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-3"></div></th>
             </tr></thead>
             <tbody id="tGerBody"></tbody>
           </table>
@@ -353,10 +357,10 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
           <table class="data-table" id="tbl-jef">
             <thead><tr>
               <th style="width:44px">#</th>
-              <th data-tbl="jef" data-col="0"><div class="th-inner"><span>Jefe</span><button class="filter-btn" onclick="openFilter(event,'jef',0)">▼</button></div><div class="filter-dropdown" id="fd-jef-0"></div></th>
-              <th data-tbl="jef" data-col="1"><div class="th-inner"><span>Total Viajes</span><button class="filter-btn" onclick="openFilter(event,'jef',1)">▼</button></div><div class="filter-dropdown" id="fd-jef-1"></div></th>
-              <th data-tbl="jef" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><button class="filter-btn" onclick="openFilter(event,'jef',2)">▼</button></div><div class="filter-dropdown" id="fd-jef-2"></div></th>
-              <th data-tbl="jef" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><button class="filter-btn" onclick="openFilter(event,'jef',3)">▼</button></div><div class="filter-dropdown" id="fd-jef-3"></div></th>
+              <th data-tbl="jef" data-col="0"><div class="th-inner"><span>Jefe</span><div class="th-btns"><button class="sort-btn" data-col="0" onclick="sortTable('jef',0)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',0)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-0"></div></th>
+              <th data-tbl="jef" data-col="1"><div class="th-inner"><span>Total Viajes</span><div class="th-btns"><button class="sort-btn" data-col="1" onclick="sortTable('jef',1)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',1)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-1"></div></th>
+              <th data-tbl="jef" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><div class="th-btns"><button class="sort-btn" data-col="2" onclick="sortTable('jef',2)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',2)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-2"></div></th>
+              <th data-tbl="jef" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><div class="th-btns"><button class="sort-btn" data-col="3" onclick="sortTable('jef',3)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',3)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-3"></div></th>
             </tr></thead>
             <tbody id="tJefBody"></tbody>
           </table>
@@ -437,32 +441,38 @@ function norm(s){
   return s;
 }
 
+// Mes de una fecha normalizada YYYY-MM-DD -> "2025-03"
+function normMonth(s){ const d=norm(s); return d?d.slice(0,7):''; }
+
 const uniq=arr=>[...new Set(arr.filter(v=>v&&v.trim()))].sort();
 
 function fillSelects(){
-  fill('fSem',uniq(DATA.map(r=>r[C.semana])));
-  fill('fCli',uniq(DATA.map(r=>r[C.cliente])));
-  fill('fGer',uniq(DATA.map(r=>r[C.gerente])));
-  fill('fJef',uniq(DATA.map(r=>r[C.jefe])));
+  fill('fSem', uniq(DATA.map(r=>r[C.semana])));
+  fill('fMes', uniq(DATA.map(r=>normMonth(r[C.fecha]))));
+  fill('fCli', uniq(DATA.map(r=>r[C.cliente])));
+  fill('fGer', uniq(DATA.map(r=>r[C.gerente])));
+  fill('fJef', uniq(DATA.map(r=>r[C.jefe])));
 }
 function fill(id,vals){
-  const sel=document.getElementById(id), cur=sel.value;
+  const sel=document.getElementById(id); if(!sel) return;
+  const cur=sel.value;
   sel.innerHTML='<option value="">Todos</option>';
   vals.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; sel.appendChild(o); });
   if(vals.includes(cur)) sel.value=cur;
 }
 function getF(){
   return{
-    sem:document.getElementById('fSem').value,
-    cli:document.getElementById('fCli').value,
-    ger:document.getElementById('fGer').value,
-    jef:document.getElementById('fJef').value,
-    fi: document.getElementById('fFi').value,
-    ff: document.getElementById('fFf').value,
+    sem: document.getElementById('fSem').value,
+    mes: document.getElementById('fMes').value,
+    cli: document.getElementById('fCli').value,
+    ger: document.getElementById('fGer').value,
+    jef: document.getElementById('fJef').value,
+    fi:  document.getElementById('fFi').value,
+    ff:  document.getElementById('fFf').value,
   };
 }
 function resetFilters(){
-  ['fSem','fCli','fGer','fJef'].forEach(id=>document.getElementById(id).value='');
+  ['fSem','fMes','fCli','fGer','fJef'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fFi').value='';
   document.getElementById('fFf').value='';
   draw();
@@ -471,6 +481,7 @@ function filterRows(){
   const f=getF();
   return DATA.filter(r=>{
     if(f.sem&&r[C.semana] !==f.sem) return false;
+    if(f.mes&&normMonth(r[C.fecha])!==f.mes) return false;
     if(f.cli&&r[C.cliente]!==f.cli) return false;
     if(f.ger&&r[C.gerente]!==f.ger) return false;
     if(f.jef&&r[C.jefe]   !==f.jef) return false;
@@ -482,38 +493,186 @@ function filterRows(){
 }
 
 function pctColor(p){
-  if(p>=95) return '#16a34a';
-  if(p>=85) return '#7ed321';
-  if(p>=70) return '#d97706';
+  if(p>=90) return '#16a34a';
   return '#e53e3e';
 }
 
-// Genera HTML de una tabla agrupada por un campo
-function buildTable(rows, field, bodyId, titleId, countId, titleBase, countWord) {
+// ─── TABLE STATE ─────────────────────────────────────────────
+// colFilters[tbl][col] = Set of allowed string values, or null = all
+// sortState[tbl] = {col: number, dir: 1|-1}
+const colFilters = { cli:{}, ger:{}, jef:{} };
+const sortState  = { cli:{col:3,dir:-1}, ger:{col:3,dir:-1}, jef:{col:3,dir:-1} };
+const tableData  = { cli:[], ger:[], jef:[] };
+const TABLE_BODY = { cli:'tCliBody', ger:'tGerBody', jef:'tJefBody' };
+const TABLE_CNT  = { cli:'tCliCount',ger:'tGerCount',jef:'tJefCount' };
+const TABLE_WORD = { cli:'cliente',  ger:'gerente',  jef:'jefe' };
+
+function colVal(row,col){
+  if(col===0) return row.k;
+  if(col===1) return row.t;
+  if(col===2) return row.l;
+  if(col===3) return row.pct;
+  return '';
+}
+function colStr(row,col){
+  const v=colVal(row,col);
+  if(col===3) return v.toFixed(1)+'%';
+  if(col===1||col===2) return String(v);
+  return String(v);
+}
+
+// ─── SORT ────────────────────────────────────────────────────
+function sortTable(tbl,col){
+  const ss=sortState[tbl];
+  if(ss.col===col){ ss.dir*=-1; }
+  else { ss.col=col; ss.dir= (col===3)?-1:1; }
+  renderTable(tbl);
+  updateSortIcons(tbl);
+}
+
+function updateSortIcons(tbl){
+  const ss=sortState[tbl];
+  document.querySelectorAll(`[data-tbl="${tbl}"] .sort-btn`).forEach(btn=>{
+    const c=parseInt(btn.dataset.col);
+    btn.textContent = c!==ss.col ? '↕' : ss.dir===1 ? '↑' : '↓';
+    btn.classList.toggle('active-sort', c===ss.col);
+  });
+}
+
+// ─── FILTER DROPDOWN ─────────────────────────────────────────
+function openFilter(e,tbl,col){
+  e.stopPropagation();
+  const ddId=`fd-${tbl}-${col}`;
+  document.querySelectorAll('.filter-dropdown.open').forEach(d=>{ if(d.id!==ddId) d.classList.remove('open'); });
+  const dd=document.getElementById(ddId);
+  if(dd.classList.contains('open')){ dd.classList.remove('open'); return; }
+
+  const allRows=tableData[tbl];
+  const vals=[...new Set(allRows.map(r=>colStr(r,col)))].sort((a,b)=>{
+    const na=parseFloat(a),nb=parseFloat(b);
+    return (!isNaN(na)&&!isNaN(nb))?na-nb:a.localeCompare(b,'es');
+  });
+
+  const active=colFilters[tbl][col];
+  dd.innerHTML=`
+    <input class="filter-search" placeholder="Buscar…" oninput="fSearch(this,'${tbl}',${col})">
+    <div class="filter-options" id="fo-${tbl}-${col}">
+      <label class="filter-option sel-all-row">
+        <input type="checkbox" id="chk-all-${tbl}-${col}" ${!active?'checked':''} onchange="fToggleAll(this,'${tbl}',${col})">
+        <span>Seleccionar todo</span>
+      </label>
+      ${vals.map(v=>`<label class="filter-option">
+        <input type="checkbox" value="${v}" ${(!active||active.has(v))?'checked':''} onchange="fSync('${tbl}',${col})">
+        <span>${v}</span>
+      </label>`).join('')}
+    </div>
+    <div class="filter-actions">
+      <button class="fa-btn clear" onclick="fClear('${tbl}',${col})">Limpiar</button>
+      <button class="fa-btn apply" onclick="fApply('${tbl}',${col})">Aplicar</button>
+    </div>`;
+  dd.classList.add('open');
+}
+
+function fSearch(inp,tbl,col){
+  const q=inp.value.toLowerCase();
+  document.querySelectorAll(`#fo-${tbl}-${col} .filter-option:not(.sel-all-row)`).forEach(opt=>{
+    opt.style.display=opt.textContent.trim().toLowerCase().includes(q)?'':'none';
+  });
+}
+function fToggleAll(chk,tbl,col){
+  document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`).forEach(c=>c.checked=chk.checked);
+}
+function fSync(tbl,col){
+  const boxes=[...document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`)];
+  document.getElementById(`chk-all-${tbl}-${col}`).checked=boxes.every(b=>b.checked);
+}
+function fApply(tbl,col){
+  const boxes=[...document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`)];
+  const checked=boxes.filter(b=>b.checked).map(b=>b.value);
+  colFilters[tbl][col]=(checked.length===boxes.length)?null:new Set(checked);
+  document.getElementById(`fd-${tbl}-${col}`).classList.remove('open');
+  updateFilterIcon(tbl,col);
+  renderTable(tbl);
+}
+function fClear(tbl,col){
+  colFilters[tbl][col]=null;
+  document.getElementById(`fd-${tbl}-${col}`).classList.remove('open');
+  updateFilterIcon(tbl,col);
+  renderTable(tbl);
+}
+function updateFilterIcon(tbl,col){
+  const btn=document.querySelector(`[data-tbl="${tbl}"][data-col="${col}"] .filter-btn`);
+  if(btn) btn.classList.toggle('active', !!colFilters[tbl][col]);
+}
+
+// ─── RENDER TABLE ────────────────────────────────────────────
+function renderTable(tbl){
+  const ss=sortState[tbl];
+  let rows=[...tableData[tbl]];
+
+  // Apply column filters
+  for(const [c,sel] of Object.entries(colFilters[tbl])){
+    if(!sel) continue;
+    rows=rows.filter(r=>sel.has(colStr(r,Number(c))));
+  }
+
+  // Sort
+  rows.sort((a,b)=>{
+    const va=colVal(a,ss.col), vb=colVal(b,ss.col);
+    if(typeof va==='number'&&typeof vb==='number') return (va-vb)*ss.dir;
+    return String(va).localeCompare(String(vb),'es')*ss.dir;
+  });
+
+  const bodyId =TABLE_BODY[tbl];
+  const countId=TABLE_CNT[tbl];
+  const word   =TABLE_WORD[tbl];
+  const N=n=>n.toLocaleString('es-MX');
+  const badgeColors=['#f59e0b','#9ca3af','#b45309'];
+
+  document.getElementById(countId).textContent=
+    rows.length+(rows.length===1?' '+word:' '+word+'s');
+
+  if(!rows.length){
+    document.getElementById(bodyId).innerHTML=
+      '<tr><td colspan="5" class="table-empty">Sin resultados</td></tr>';
+    return;
+  }
+
+  document.getElementById(bodyId).innerHTML=rows.map((row,i)=>{
+    const pctFmt=row.pct.toFixed(1)+'%';
+    const color=pctColor(row.pct);
+    const barW=Math.min(100,row.pct).toFixed(1);
+    const badgeBg=i<3?badgeColors[i]:'#e5e7eb';
+    const badgeFg=i<3?'#fff':'#6b7a99';
+    return `<tr>
+      <td style="width:44px"><span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span></td>
+      <td class="td-cli" title="${row.k}">${row.k}</td>
+      <td class="td-num">${N(row.t)}</td>
+      <td class="td-late">${N(row.l)}</td>
+      <td><div class="pct-cell">
+        <div class="pct-bar-wrap"><div class="pct-bar" style="width:${barW}%;background:${color}"></div></div>
+        <span class="pct-val" style="color:${color}">${pctFmt}</span>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── BUILD TABLE (called from draw) ──────────────────────────
+function buildTable(rows,field,tbl){
   const byKey={};
   rows.forEach(r=>{
     const k=(r[field]||'').trim()||'(Sin asignar)';
     if(!byKey[k]) byKey[k]={t:0,l:0};
-    byKey[k].t+=parseInt(r[C.viajes]) ||1;
+    byKey[k].t+=parseInt(r[C.viajes])||1;
     byKey[k].l+=parseInt(r[C.retardo])||0;
   });
-
-  const sorted=Object.entries(byKey)
-    .map(([k,d])=>({k, t:d.t, l:d.l, pct:d.t>0?(d.t-d.l)/d.t*100:0}))
-    .sort((a,b)=>b.pct-a.pct);
-
-  // Store full snapshot and reset column filters for this table
-  const tblKey = countId.replace('tCli','cli').replace('tGer','ger').replace('tJef','jef')
-    .replace('Count','').replace('cli','cli').replace('ger','ger').replace('jef','jef');
-  // Derive key: tCliCount->cli, tGerCount->ger, tJefCount->jef
-  const key = countId==='tCliCount'?'cli':countId==='tGerCount'?'ger':'jef';
-  tableData[key] = sorted;
-  // Reset col filters when data refreshes
-  tableFilters[key] = {};
-  // Reset active highlights
-  document.querySelectorAll(`[data-tbl="${key}"] .filter-btn`).forEach(b=>b.classList.remove('active'));
-
-  renderFilteredTable(key);
+  tableData[tbl]=Object.entries(byKey)
+    .map(([k,d])=>({k,t:d.t,l:d.l,pct:d.t>0?(d.t-d.l)/d.t*100:0}));
+  // Reset column filters on new data load
+  colFilters[tbl]={};
+  document.querySelectorAll(`[data-tbl="${tbl}"] .filter-btn`).forEach(b=>b.classList.remove('active'));
+  renderTable(tbl);
+  updateSortIcons(tbl);
 }
 
 function draw(){
@@ -521,58 +680,47 @@ function draw(){
   const rows=filterRows();
   const f=getF();
 
-  // ── KPIs ──
-  const totT=rows.reduce((s,r)=>s+(parseInt(r[C.viajes]) ||1),0);
+  // KPIs
+  const totT=rows.reduce((s,r)=>s+(parseInt(r[C.viajes])||1),0);
   const totL=rows.reduce((s,r)=>s+(parseInt(r[C.retardo])||0),0);
   const N=n=>n.toLocaleString('es-MX');
   document.getElementById('kTotal').textContent=N(totT);
   document.getElementById('kTarde').textContent=N(totL);
-  document.getElementById('kPct').textContent=totT>0?((totT-totL)/totT*100).toFixed(1)+'%':'–';
+  const pctGlobal=totT>0?((totT-totL)/totT*100):0;
+  const kPctEl=document.getElementById('kPct');
+  kPctEl.textContent=totT>0?pctGlobal.toFixed(1)+'%':'–';
+  kPctEl.style.color=pctColor(pctGlobal);
 
-  // ── Gráfica por día ──
+  // Chart
   const by={};
   rows.forEach(r=>{
     const d=norm(r[C.fecha]); if(!d) return;
     if(!by[d]) by[d]={t:0,l:0};
-    by[d].t+=parseInt(r[C.viajes]) ||1;
+    by[d].t+=parseInt(r[C.viajes])||1;
     by[d].l+=parseInt(r[C.retardo])||0;
   });
   const dates=Object.keys(by).sort();
-  const tots =dates.map(d=>by[d].t);
+  const tots=dates.map(d=>by[d].t);
   const lates=dates.map(d=>by[d].l);
-  const pcts =dates.map(d=>by[d].t>0?+((by[d].t-by[d].l)/by[d].t*100).toFixed(1):0);
-  const labels=dates.map(d=>{
-    const dt=new Date(d+'T12:00:00');
-    return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short'});
-  });
+  const pcts=dates.map(d=>by[d].t>0?+((by[d].t-by[d].l)/by[d].t*100).toFixed(1):0);
+  const labels=dates.map(d=>{ const dt=new Date(d+'T12:00:00'); return dt.toLocaleDateString('es-MX',{day:'2-digit',month:'short'}); });
 
   if(myChart) myChart.destroy();
   const ctx=document.getElementById('chart').getContext('2d');
   myChart=new Chart(ctx,{
     type:'bar',
     data:{labels,datasets:[
-      {label:'En tiempo',data:tots.map((t,i)=>t-lates[i]),backgroundColor:'#7ed321',
-       stack:'s',order:2,borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4},barPercentage:.6},
-      {label:'Inicios tarde',data:lates,backgroundColor:'#b0bac9',
-       stack:'s',order:2,borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0},barPercentage:.6},
-      {label:'% Cumplimiento',data:pcts,type:'line',yAxisID:'yP',order:1,
-       borderColor:'#5cb800',backgroundColor:'rgba(92,184,0,.07)',borderWidth:2.5,
-       pointBackgroundColor:'#5cb800',pointBorderColor:'#fff',pointBorderWidth:2,
-       pointRadius:5,pointHoverRadius:7,tension:.3,fill:true},
+      {label:'En tiempo',data:tots.map((t,i)=>t-lates[i]),backgroundColor:'#7ed321',stack:'s',order:2,borderRadius:{topLeft:0,topRight:0,bottomLeft:4,bottomRight:4},barPercentage:.6},
+      {label:'Inicios tarde',data:lates,backgroundColor:'#b0bac9',stack:'s',order:2,borderRadius:{topLeft:4,topRight:4,bottomLeft:0,bottomRight:0},barPercentage:.6},
+      {label:'% Cumplimiento',data:pcts,type:'line',yAxisID:'yP',order:1,borderColor:'#5cb800',backgroundColor:'rgba(92,184,0,.07)',borderWidth:2.5,pointBackgroundColor:'#5cb800',pointBorderColor:'#fff',pointBorderWidth:2,pointRadius:5,pointHoverRadius:7,tension:.3,fill:true},
     ]},
     options:{
       responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
       plugins:{
         legend:{display:false},
-        tooltip:{
-          backgroundColor:'#1a2236',borderColor:'#7ed321',borderWidth:1,
-          titleColor:'#fff',bodyColor:'rgba(255,255,255,.65)',padding:12,
-          callbacks:{label(c){
-            return c.dataset.label==='% Cumplimiento'
-              ?'  % Cumpl.: '+c.raw+'%'
-              :'  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX');
-          }}
+        tooltip:{backgroundColor:'#1a2236',borderColor:'#7ed321',borderWidth:1,titleColor:'#fff',bodyColor:'rgba(255,255,255,.65)',padding:12,
+          callbacks:{label(c){ return c.dataset.label==='% Cumplimiento'?'  % Cumpl.: '+c.raw+'%':'  '+c.dataset.label+': '+c.raw.toLocaleString('es-MX'); }}
         }
       },
       scales:{
@@ -581,52 +729,48 @@ function draw(){
         yP:{position:'right',ticks:{color:'#5cb800',font:{size:10},callback:v=>v+'%'},grid:{display:false}},
       }
     },
-    plugins:[{
-      id:'lbl',
-      afterDatasetsDraw(chart){
-        const ctx=chart.ctx;
-        const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
-        chart.getDatasetMeta(li).data.forEach((pt,i)=>{
-          const v=chart.data.datasets[li].data[i]; if(v==null) return;
-          ctx.save();ctx.fillStyle='#5a7a00';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.fillText(v+'%',pt.x,pt.y-10);ctx.restore();
-        });
-        const bi=chart.data.datasets.findIndex(d=>d.label==='Inicios tarde');
-        chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
-          const v=chart.data.datasets[bi].data[i]; if(!v||bar.height<14) return;
-          ctx.save();ctx.fillStyle='#fff';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
-        });
-        const vi=chart.data.datasets.findIndex(d=>d.label==='En tiempo');
-        chart.getDatasetMeta(vi).data.forEach((bar,i)=>{
-          const v=chart.data.datasets[vi].data[i]; if(!v||bar.height<14) return;
-          ctx.save();ctx.fillStyle='rgba(0,0,0,.5)';ctx.font='bold 10px Inter';
-          ctx.textAlign='center';ctx.textBaseline='middle';
-          ctx.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx.restore();
-        });
-      }
-    }]
+    plugins:[{id:'lbl',afterDatasetsDraw(chart){
+      const ctx2=chart.ctx;
+      const li=chart.data.datasets.findIndex(d=>d.label==='% Cumplimiento');
+      chart.getDatasetMeta(li).data.forEach((pt,i)=>{
+        const v=chart.data.datasets[li].data[i]; if(v==null) return;
+        ctx2.save();ctx2.fillStyle='#5a7a00';ctx2.font='bold 10px Inter';ctx2.textAlign='center';ctx2.fillText(v+'%',pt.x,pt.y-10);ctx2.restore();
+      });
+      const bi=chart.data.datasets.findIndex(d=>d.label==='Inicios tarde');
+      chart.getDatasetMeta(bi).data.forEach((bar,i)=>{
+        const v=chart.data.datasets[bi].data[i]; if(!v||bar.height<14) return;
+        ctx2.save();ctx2.fillStyle='#fff';ctx2.font='bold 10px Inter';ctx2.textAlign='center';ctx2.textBaseline='middle';ctx2.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx2.restore();
+      });
+      const vi=chart.data.datasets.findIndex(d=>d.label==='En tiempo');
+      chart.getDatasetMeta(vi).data.forEach((bar,i)=>{
+        const v=chart.data.datasets[vi].data[i]; if(!v||bar.height<14) return;
+        ctx2.save();ctx2.fillStyle='rgba(0,0,0,.5)';ctx2.font='bold 10px Inter';ctx2.textAlign='center';ctx2.textBaseline='middle';ctx2.fillText(v.toLocaleString('es-MX'),bar.x,bar.y+bar.height/2);ctx2.restore();
+      });
+    }}]
   });
 
-  // Suffix para títulos
   const parts=[];
   if(f.sem) parts.push('Sem '+f.sem);
+  if(f.mes) parts.push('Mes '+f.mes);
   if(f.cli) parts.push(f.cli);
   if(f.ger) parts.push('Ger: '+f.ger);
   if(f.jef) parts.push('Jefe: '+f.jef);
   const suffix=parts.length?' – '+parts.join(' · '):'';
 
   document.getElementById('chartTitle').textContent='Inicios Tarde por Día'+suffix;
-  document.getElementById('tCliTitle').textContent ='Resumen por Cliente'+suffix;
-  document.getElementById('tGerTitle').textContent ='Resumen por Gerente'+suffix;
-  document.getElementById('tJefTitle').textContent ='Resumen por Jefe'+suffix;
+  document.getElementById('tCliTitle').textContent='Resumen por Cliente'+suffix;
+  document.getElementById('tGerTitle').textContent='Resumen por Gerente'+suffix;
+  document.getElementById('tJefTitle').textContent='Resumen por Jefe'+suffix;
 
-  // ── Las 3 tablas ──
-  buildTable(rows, C.cliente, 'tCliBody', 'tCliTitle', 'tCliCount', 'Resumen por Cliente', 'cliente');
-  buildTable(rows, C.gerente, 'tGerBody', 'tGerTitle', 'tGerCount', 'Resumen por Gerente', 'gerente');
-  buildTable(rows, C.jefe,    'tJefBody', 'tJefTitle', 'tJefCount', 'Resumen por Jefe',    'jefe');
+  buildTable(rows, C.cliente, 'cli');
+  buildTable(rows, C.gerente, 'ger');
+  buildTable(rows, C.jefe,    'jef');
 }
+
+// Close dropdowns on outside click
+document.addEventListener('click',()=>{
+  document.querySelectorAll('.filter-dropdown.open').forEach(d=>d.classList.remove('open'));
+});
 
 function showLoad(t){document.getElementById('loadTxt').textContent=t;document.getElementById('loading').classList.remove('hidden')}
 function hideLoad(){document.getElementById('loading').classList.add('hidden')}
@@ -640,156 +784,18 @@ function setStatus(t,ok){
 function showErr(msg){document.getElementById('errMsg').textContent=msg;document.getElementById('errBanner').classList.remove('hidden')}
 function hideErr(){document.getElementById('errBanner').classList.add('hidden')}
 
-// ─── EXCEL-LIKE TABLE FILTERS ───────────────────────────────
-// tableFilters[tbl][col] = Set of selected values (null = all)
-const tableFilters = { cli:{}, ger:{}, jef:{} };
-// Snapshot of full sorted data per table (set by buildTable)
-const tableData = { cli:[], ger:[], jef:[] };
-const tableBodyIds = { cli:'tCliBody', ger:'tGerBody', jef:'tJefBody' };
-const tableCountIds= { cli:'tCliCount',ger:'tGerCount',jef:'tJefCount' };
-const tableCountWords={ cli:'cliente', ger:'gerente', jef:'jefe' };
-
-function openFilter(e, tbl, col){
-  e.stopPropagation();
-  // Close all other dropdowns
-  document.querySelectorAll('.filter-dropdown.open').forEach(d=>{
-    if(d.id!==`fd-${tbl}-${col}`) d.classList.remove('open');
-  });
-  const dd = document.getElementById(`fd-${tbl}-${col}`);
-  if(dd.classList.contains('open')){ dd.classList.remove('open'); return; }
-
-  // Build unique values from full data
-  const rows = tableData[tbl];
-  const vals = [...new Set(rows.map(r=>colVal(r,col)))].sort((a,b)=>{
-    const na=parseFloat(a), nb=parseFloat(b);
-    return isNaN(na)||isNaN(nb)?String(a).localeCompare(String(b)):na-nb;
-  });
-
-  const active = tableFilters[tbl][col]; // Set or undefined
-  dd.innerHTML = `
-    <input class="filter-search" placeholder="Buscar…" oninput="filterSearch(this,'${tbl}',${col})">
-    <div class="filter-options" id="fo-${tbl}-${col}">
-      <label class="filter-option" id="fo-all-${tbl}-${col}">
-        <input type="checkbox" id="chk-all-${tbl}-${col}" ${!active?'checked':''} onchange="toggleAll(this,'${tbl}',${col})"> Seleccionar todo
-      </label>
-      ${vals.map(v=>`
-        <label class="filter-option">
-          <input type="checkbox" value="${v}" ${(!active||active.has(String(v)))?'checked':''} onchange="updateFilter('${tbl}',${col})">
-          ${v}
-        </label>`).join('')}
-    </div>
-    <div class="filter-actions">
-      <button class="fa-btn clear" onclick="clearColFilter('${tbl}',${col})">Limpiar</button>
-      <button class="fa-btn apply" onclick="applyColFilter('${tbl}',${col})">Aplicar</button>
-    </div>`;
-  dd.classList.add('open');
-}
-
-function colVal(row, col){
-  if(col===0) return row.k;
-  if(col===1) return row.t;
-  if(col===2) return row.l;
-  if(col===3) return row.pct.toFixed(1)+'%';
-  return '';
-}
-
-function filterSearch(inp, tbl, col){
-  const q = inp.value.toLowerCase();
-  document.querySelectorAll(`#fo-${tbl}-${col} .filter-option`).forEach(opt=>{
-    if(opt.id===`fo-all-${tbl}-${col}`) return;
-    opt.style.display = opt.textContent.toLowerCase().includes(q)?'':'none';
-  });
-}
-
-function toggleAll(chk, tbl, col){
-  document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`).forEach(c=>c.checked=chk.checked);
-}
-
-function updateFilter(tbl, col){
-  const boxes = [...document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`)];
-  const allChk = document.getElementById(`chk-all-${tbl}-${col}`);
-  allChk.checked = boxes.every(b=>b.checked);
-}
-
-function applyColFilter(tbl, col){
-  const boxes = [...document.querySelectorAll(`#fo-${tbl}-${col} input[type=checkbox]:not(#chk-all-${tbl}-${col})`)];
-  const checked = boxes.filter(b=>b.checked).map(b=>b.value);
-  const all = boxes.length===checked.length;
-  tableFilters[tbl][col] = all ? null : new Set(checked);
-  // Update button highlight
-  const btn = document.querySelector(`[data-tbl="${tbl}"][data-col="${col}"] .filter-btn`);
-  if(btn) btn.classList.toggle('active', !all);
-  document.getElementById(`fd-${tbl}-${col}`).classList.remove('open');
-  renderFilteredTable(tbl);
-}
-
-function clearColFilter(tbl, col){
-  tableFilters[tbl][col] = null;
-  const btn = document.querySelector(`[data-tbl="${tbl}"][data-col="${col}"] .filter-btn`);
-  if(btn) btn.classList.remove('active');
-  document.getElementById(`fd-${tbl}-${col}`).classList.remove('open');
-  renderFilteredTable(tbl);
-}
-
-function renderFilteredTable(tbl){
-  let rows = tableData[tbl];
-  // Apply each active column filter
-  for(const [col, sel] of Object.entries(tableFilters[tbl])){
-    if(!sel) continue;
-    rows = rows.filter(r=>sel.has(String(colVal(r,Number(col)))));
-  }
-  const bodyId  = tableBodyIds[tbl];
-  const countId = tableCountIds[tbl];
-  const word    = tableCountWords[tbl];
-  const N=n=>n.toLocaleString('es-MX');
-  const badgeColors=['#f59e0b','#9ca3af','#b45309'];
-  document.getElementById(countId).textContent =
-    rows.length+(rows.length===1?' '+word:' '+word+'s');
-  if(!rows.length){
-    document.getElementById(bodyId).innerHTML=
-      '<tr><td colspan="5" class="table-empty">Sin resultados para el filtro</td></tr>';
-    return;
-  }
-  document.getElementById(bodyId).innerHTML=rows.map((row,i)=>{
-    const pctFmt=row.pct.toFixed(1)+'%';
-    const color=pctColor(row.pct);
-    const barW=Math.min(100,row.pct).toFixed(1);
-    const badgeBg=i<3?badgeColors[i]:'#e5e7eb';
-    const badgeFg=i<3?'#fff':'#6b7a99';
-    return `<tr>
-      <td style="width:44px"><span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span></td>
-      <td class="td-cli" title="${row.k}">${row.k}</td>
-      <td class="td-num">${N(row.t)}</td>
-      <td class="td-late">${N(row.l)}</td>
-      <td><div class="pct-cell"><div class="pct-bar-wrap"><div class="pct-bar" style="width:${barW}%;background:${color}"></div></div><span class="pct-val" style="color:${color}">${pctFmt}</span></div></td>
-    </tr>`;
-  }).join('');
-}
-
-// Close dropdowns on outside click
-document.addEventListener('click', ()=>{
-  document.querySelectorAll('.filter-dropdown.open').forEach(d=>d.classList.remove('open'));
-});
-
 // ─── CAPTURE TABLE ───────────────────────────────────────────
-async function captureTable(cardId, label){
-  const card = document.getElementById(cardId);
+async function captureTable(cardId,label){
+  const card=document.getElementById(cardId);
   if(!card) return;
-  try {
-    const canvas = await html2canvas(card, {
-      scale: 2,
-      backgroundColor: '#ffffff',
-      useCORS: true,
-      logging: false,
-    });
-    const link = document.createElement('a');
-    const ts = new Date().toISOString().slice(0,10);
-    link.download = `Traxion_${label}_${ts}.png`;
-    link.href = canvas.toDataURL('image/png');
+  try{
+    const canvas=await html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});
+    const link=document.createElement('a');
+    const ts=new Date().toISOString().slice(0,10);
+    link.download=`Traxion_${label}_${ts}.png`;
+    link.href=canvas.toDataURL('image/png');
     link.click();
-  } catch(err){
-    alert('Error al capturar: '+err.message);
-  }
+  }catch(err){ alert('Error al capturar: '+err.message); }
 }
 </script>
 </body>
