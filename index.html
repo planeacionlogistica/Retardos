@@ -233,10 +233,10 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
 <div class="layout">
   <aside class="sidebar">
     <div class="sb-title">Filtros</div>
-    <div class="fg"><label>Semana</label>
-      <select id="fSem" onchange="draw()"><option value="">Todas</option></select></div>
     <div class="fg"><label>Mes</label>
       <select id="fMes" onchange="draw()"><option value="">Todos</option></select></div>
+    <div class="fg"><label>Semana</label>
+      <select id="fSem" onchange="draw()"><option value="">Todas</option></select></div>
     <div class="fg"><label>Cliente / Grupo</label>
       <select id="fCli" onchange="draw()"><option value="">Todos</option></select></div>
     <div class="fg"><label>Gerente</label>
@@ -444,11 +444,25 @@ function norm(s){
 // Mes de una fecha normalizada YYYY-MM-DD -> "2025-03"
 function normMonth(s){ const d=norm(s); return d?d.slice(0,7):''; }
 
+const MESES_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+function mesLabel(ym){ // "2025-03" -> "Marzo 2025"
+  if(!ym) return ym;
+  const [y,m]=ym.split('-');
+  return MESES_ES[parseInt(m,10)-1]+' '+y;
+}
+
 const uniq=arr=>[...new Set(arr.filter(v=>v&&v.trim()))].sort();
 
 function fillSelects(){
   fill('fSem', uniq(DATA.map(r=>r[C.semana])));
-  fill('fMes', uniq(DATA.map(r=>normMonth(r[C.fecha]))));
+  // Mes: value=YYYY-MM, label="Enero 2025"
+  const meses=uniq(DATA.map(r=>normMonth(r[C.fecha])));
+  const sel=document.getElementById('fMes'); if(sel){
+    const cur=sel.value;
+    sel.innerHTML='<option value="">Todos</option>';
+    meses.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=mesLabel(v); sel.appendChild(o); });
+    if(meses.includes(cur)) sel.value=cur;
+  }
   fill('fCli', uniq(DATA.map(r=>r[C.cliente])));
   fill('fGer', uniq(DATA.map(r=>r[C.gerente])));
   fill('fJef', uniq(DATA.map(r=>r[C.jefe])));
