@@ -293,7 +293,7 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
       <div class="table-hdr">
         <div class="table-hdr-left">
           <div class="table-hdr-title"><span class="table-hdr-icon">🏢</span><span id="tCliTitle">Resumen por Cliente</span></div>
-          <div class="table-hdr-sub">Filtros por columna activos · respeta los filtros del panel</div>
+          <div class="table-hdr-sub">Ordenado por % cumplimiento</div>
         </div>
         <div class="table-hdr-actions">
           <span class="table-count" id="tCliCount">0 clientes</span>
@@ -304,10 +304,10 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
         <table class="data-table" id="tbl-cli">
           <thead><tr>
             <th style="width:44px">#</th>
-            <th data-tbl="cli" data-col="0"><div class="th-inner"><span>Cliente / Grupo</span><div class="th-btns"><button class="sort-btn" data-col="0" onclick="sortTable('cli',0)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',0)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-0"></div></th>
-            <th data-tbl="cli" data-col="1"><div class="th-inner"><span>Total Viajes</span><div class="th-btns"><button class="sort-btn" data-col="1" onclick="sortTable('cli',1)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',1)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-1"></div></th>
-            <th data-tbl="cli" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><div class="th-btns"><button class="sort-btn" data-col="2" onclick="sortTable('cli',2)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',2)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-2"></div></th>
-            <th data-tbl="cli" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><div class="th-btns"><button class="sort-btn" data-col="3" onclick="sortTable('cli',3)">⇅</button><button class="filter-btn" onclick="openFilter(event,'cli',3)">▼</button></div></div><div class="filter-dropdown" id="fd-cli-3"></div></th>
+            <th>Cliente / Grupo</th>
+            <th>Total Viajes</th>
+            <th>Inicios Tarde</th>
+            <th style="cursor:pointer" onclick="sortTable('cli',3)"><div class="th-inner"><span>% Cumplimiento</span><button class="sort-btn" id="sort-cli" style="pointer-events:none">↓</button></div></th>
           </tr></thead>
           <tbody id="tCliBody"></tbody>
         </table>
@@ -321,7 +321,7 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
         <div class="table-hdr">
           <div class="table-hdr-left">
             <div class="table-hdr-title"><span class="table-hdr-icon">👔</span><span id="tGerTitle">Resumen por Gerente</span></div>
-            <div class="table-hdr-sub">Filtros por columna activos</div>
+            <div class="table-hdr-sub">Ordenado por % cumplimiento</div>
           </div>
           <div class="table-hdr-actions">
             <span class="table-count" id="tGerCount">0 gerentes</span>
@@ -332,10 +332,10 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
           <table class="data-table" id="tbl-ger">
             <thead><tr>
               <th style="width:44px">#</th>
-              <th data-tbl="ger" data-col="0"><div class="th-inner"><span>Gerente</span><div class="th-btns"><button class="sort-btn" data-col="0" onclick="sortTable('ger',0)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',0)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-0"></div></th>
-              <th data-tbl="ger" data-col="1"><div class="th-inner"><span>Total Viajes</span><div class="th-btns"><button class="sort-btn" data-col="1" onclick="sortTable('ger',1)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',1)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-1"></div></th>
-              <th data-tbl="ger" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><div class="th-btns"><button class="sort-btn" data-col="2" onclick="sortTable('ger',2)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',2)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-2"></div></th>
-              <th data-tbl="ger" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><div class="th-btns"><button class="sort-btn" data-col="3" onclick="sortTable('ger',3)">⇅</button><button class="filter-btn" onclick="openFilter(event,'ger',3)">▼</button></div></div><div class="filter-dropdown" id="fd-ger-3"></div></th>
+              <th>Gerente</th>
+              <th>Total Viajes</th>
+              <th>Inicios Tarde</th>
+              <th style="cursor:pointer" onclick="sortTable('ger',3)"><div class="th-inner"><span>% Cumplimiento</span><button class="sort-btn" id="sort-ger" style="pointer-events:none">↓</button></div></th>
             </tr></thead>
             <tbody id="tGerBody"></tbody>
           </table>
@@ -346,7 +346,7 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
         <div class="table-hdr">
           <div class="table-hdr-left">
             <div class="table-hdr-title"><span class="table-hdr-icon">🗂️</span><span id="tJefTitle">Resumen por Jefe</span></div>
-            <div class="table-hdr-sub">Filtros por columna activos</div>
+            <div class="table-hdr-sub">Ordenado por % cumplimiento</div>
           </div>
           <div class="table-hdr-actions">
             <span class="table-count" id="tJefCount">0 jefes</span>
@@ -357,10 +357,10 @@ html,body{background:var(--bg);color:var(--text);font-family:"Inter",sans-serif;
           <table class="data-table" id="tbl-jef">
             <thead><tr>
               <th style="width:44px">#</th>
-              <th data-tbl="jef" data-col="0"><div class="th-inner"><span>Jefe</span><div class="th-btns"><button class="sort-btn" data-col="0" onclick="sortTable('jef',0)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',0)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-0"></div></th>
-              <th data-tbl="jef" data-col="1"><div class="th-inner"><span>Total Viajes</span><div class="th-btns"><button class="sort-btn" data-col="1" onclick="sortTable('jef',1)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',1)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-1"></div></th>
-              <th data-tbl="jef" data-col="2"><div class="th-inner"><span>Inicios Tarde</span><div class="th-btns"><button class="sort-btn" data-col="2" onclick="sortTable('jef',2)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',2)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-2"></div></th>
-              <th data-tbl="jef" data-col="3"><div class="th-inner"><span>% Cumplimiento</span><div class="th-btns"><button class="sort-btn" data-col="3" onclick="sortTable('jef',3)">⇅</button><button class="filter-btn" onclick="openFilter(event,'jef',3)">▼</button></div></div><div class="filter-dropdown" id="fd-jef-3"></div></th>
+              <th>Jefe</th>
+              <th>Total Viajes</th>
+              <th>Inicios Tarde</th>
+              <th style="cursor:pointer" onclick="sortTable('jef',3)"><div class="th-inner"><span>% Cumplimiento</span><button class="sort-btn" id="sort-jef" style="pointer-events:none">↓</button></div></th>
             </tr></thead>
             <tbody id="tJefBody"></tbody>
           </table>
@@ -538,19 +538,10 @@ function colStr(row,col){
 // ─── SORT ────────────────────────────────────────────────────
 function sortTable(tbl,col){
   const ss=sortState[tbl];
-  if(ss.col===col){ ss.dir*=-1; }
-  else { ss.col=col; ss.dir= (col===3)?-1:1; }
+  ss.dir*=-1;
   renderTable(tbl);
-  updateSortIcons(tbl);
-}
-
-function updateSortIcons(tbl){
-  const ss=sortState[tbl];
-  document.querySelectorAll(`[data-tbl="${tbl}"] .sort-btn`).forEach(btn=>{
-    const c=parseInt(btn.dataset.col);
-    btn.textContent = c!==ss.col ? '↕' : ss.dir===1 ? '↑' : '↓';
-    btn.classList.toggle('active-sort', c===ss.col);
-  });
+  const btn=document.getElementById('sort-'+tbl);
+  if(btn) btn.textContent=ss.dir===-1?'↓':'↑';
 }
 
 // ─── FILTER DROPDOWN ─────────────────────────────────────────
@@ -682,11 +673,8 @@ function buildTable(rows,field,tbl){
   });
   tableData[tbl]=Object.entries(byKey)
     .map(([k,d])=>({k,t:d.t,l:d.l,pct:d.t>0?(d.t-d.l)/d.t*100:0}));
-  // Reset column filters on new data load
   colFilters[tbl]={};
-  document.querySelectorAll(`[data-tbl="${tbl}"] .filter-btn`).forEach(b=>b.classList.remove('active'));
   renderTable(tbl);
-  updateSortIcons(tbl);
 }
 
 function draw(){
