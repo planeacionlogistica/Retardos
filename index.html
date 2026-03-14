@@ -460,6 +460,7 @@ function mesLabel(ym){ if(!ym) return ym; const [y,m]=ym.split('-'); return MESE
 const uniq=arr=>[...new Set(arr.filter(v=>v&&v.trim()))].sort();
 const N=n=>n.toLocaleString('es-MX');
 function pctColor(p){ return p>=90?'#16a34a':'#e53e3e'; }
+function pctColorLlegadas(p){ return p>=98?'#16a34a':'#e53e3e'; }
 
 // ─── FILTERS ─────────────────────────────────────────────────
 function fillSelects(){
@@ -540,6 +541,8 @@ function sortTable(tbl,col){
 
 function renderTable(tbl){
   const ss=sortState[tbl];
+  const isLlegadas=tbl.startsWith('l');
+  const colorFn=isLlegadas?pctColorLlegadas:pctColor;
   let rows=[...tableData[tbl]];
   rows.sort((a,b)=>{
     const va=colVal(a,ss.col),vb=colVal(b,ss.col);
@@ -551,7 +554,7 @@ function renderTable(tbl){
   document.getElementById(countId).textContent=rows.length+(rows.length===1?' '+word:' '+word+'s');
   if(!rows.length){ document.getElementById(bodyId).innerHTML='<tr><td colspan="5" class="table-empty">Sin resultados</td></tr>'; return; }
   document.getElementById(bodyId).innerHTML=rows.map((row,i)=>{
-    const pctFmt=row.pct.toFixed(1)+'%', color=pctColor(row.pct), barW=Math.min(100,row.pct).toFixed(1);
+    const pctFmt=row.pct.toFixed(1)+'%', color=colorFn(row.pct), barW=Math.min(100,row.pct).toFixed(1);
     const badgeBg=i<3?badgeColors[i]:'#e5e7eb', badgeFg=i<3?'#fff':'#6b7a99';
     return `<tr>
       <td style="width:44px"><span class="rank-badge" style="background:${badgeBg};color:${badgeFg}">${i+1}</span></td>
@@ -671,7 +674,7 @@ function draw(){
   const pctLL=totT>0?((totT-totLL)/totT*100):0;
   const lkPctEl=document.getElementById('lkPct');
   lkPctEl.textContent=totT>0?pctLL.toFixed(1)+'%':'–';
-  lkPctEl.style.color=pctColor(pctLL);
+  lkPctEl.style.color=pctColorLlegadas(pctLL);
   document.getElementById('lChartTitle').textContent='Llegadas Tarde por Día'+suffix;
   document.getElementById('ltCliTitle').textContent='Resumen por Cliente'+suffix;
   document.getElementById('ltGerTitle').textContent='Resumen por Gerente'+suffix;
